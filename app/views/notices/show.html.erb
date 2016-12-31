@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @notice.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @notice.description %>
+</p>
+
+<p>
+  <strong>Notify chronic:</strong>
+  <%= @notice.notify_chronic %>
+</p>
+
+<p>
+  <strong>Repeat:</strong>
+  <%= @notice.repeat %>
+</p>
+
+<p>
+  <strong>Notify at:</strong>
+  <%= @notice.notify_at %>
+</p>
+
+<p>
+  <strong>Sent at:</strong>
+  <%= @notice.sent_at %>
+</p>
+
+<p>
+  <strong>Cancelled:</strong>
+  <%= @notice.cancelled %>
+</p>
+
+<%= link_to 'Edit', edit_notice_path(@notice) %> |
+<%= link_to 'Back', notices_path %>

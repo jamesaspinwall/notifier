@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyString
+  notify_chronic: MyString
+  repeat: false
+  notify_at: 2016-12-31 10:46:37
+  sent_at: 2016-12-31 10:46:37
+  cancelled: 2016-12-31 10:46:37
+
+two:
+  title: MyString
+  description: MyString
+  notify_chronic: MyString
+  repeat: false
+  notify_at: 2016-12-31 10:46:37
+  sent_at: 2016-12-31 10:46:37
+  cancelled: 2016-12-31 10:46:37
