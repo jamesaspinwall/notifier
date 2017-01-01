@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class NoticesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @notice = notices(:one)
-  end
 
   test "should get index" do
     get notices_url
@@ -17,9 +14,8 @@ class NoticesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notice" do
     assert_difference('Notice.count') do
-      post notices_url, params: { notice: notice_attr }
+      post notices_url, params: {notice: notice_attr}
     end
-
     assert_redirected_to notice_url(Notice.last)
   end
 
@@ -30,20 +26,31 @@ class NoticesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
-    get edit_notice_url(@notice)
+    notice = Notice.create(notice_attr)
+    get edit_notice_url(notice)
     assert_response :success
   end
 
   test "should update notice" do
-    patch notice_url(@notice), params: { notice: { cancelled: @notice.cancelled, description: @notice.description, notify_at: @notice.notify_at, notify_chronic: @notice.notify_chronic, repeat: @notice.repeat, sent_at: @notice.sent_at, title: @notice.title } }
-    assert_redirected_to notice_url(@notice)
+    notice = Notice.create(notice_attr)
+    patch notice_url(notice), params: {notice: notice_attr}
+    assert_redirected_to notice_url(notice)
   end
 
   test "should destroy notice" do
+    notice = Notice.create(notice_attr)
     assert_difference('Notice.count', -1) do
-      delete notice_url(@notice)
+      delete notice_url(notice.id)
+      refute_empty flash[:notice]
     end
+    assert_redirected_to notices_url
+  end
 
+  test "should not destroy NOT FOULD notice" do
+    assert_difference('Notice.count', 0) do
+      delete notice_url('abc')
+      refute_empty flash[:error]
+    end
     assert_redirected_to notices_url
   end
 

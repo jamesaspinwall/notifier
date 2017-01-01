@@ -13,6 +13,6 @@ def notice_attr(attr = {})
   {
     title: 'title',
     description: 'description',
-    notify_chronic: 'tomorrow 11 AM',
+    notify_chronic: 'tomorrow',
   }.merge attr
 end

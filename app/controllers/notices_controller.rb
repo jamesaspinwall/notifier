@@ -54,7 +54,7 @@ class NoticesController < ApplicationController
   # DELETE /notices/1
   # DELETE /notices/1.json
   def destroy
-    @notice.destroy
+    set_notice.destroy
     respond_to do |format|
       format.html { redirect_to notices_url, notice: 'Notice was successfully destroyed.' }
       format.json { head :no_content }
@@ -62,13 +62,18 @@ class NoticesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_notice
-      @notice = Notice.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_notice
+    @notice = Notice.find(params[:id])
+  rescue => e
+    respond_to do |format|
+      format.html { redirect_to notices_url, flash: {error: e.message} }
+      format.json { head :no_content, status: 404 }
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def notice_params
-      params.require(:notice).permit(:title, :description, :notify_chronic, :repeat, :notify_at, :sent_at, :cancelled)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def notice_params
+    params.require(:notice).permit(:title, :description, :notify_chronic, :repeat, :notify_at, :sent_at, :cancelled)
+  end
 end

@@ -5,7 +5,7 @@ class NoticeTest < ActiveSupport::TestCase
   test 'notice1' do
     Time.zone = 'America/Los_Angeles'
     assert_difference 'Notice.count' do
-      notice = Notice.create notice_attr()
+      notice = Notice.create notice_attr(notify_chronic: 'tomorrow 11 AM')
       assert_equal tomorrow_11_AM, notice.notify_at
     end
   end
