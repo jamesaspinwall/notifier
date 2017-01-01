@@ -3,7 +3,7 @@
 one:
   title: MyString
   description: MyString
-  notify_chronic: MyString
+  notify_chronic: 'tomorrow'
   repeat: false
   notify_at: 2016-12-31 10:46:37
   sent_at: 2016-12-31 10:46:37
@@ -12,7 +12,7 @@ one:
 two:
   title: MyString
   description: MyString
-  notify_chronic: MyString
+  notify_chronic: 'in 5 days'
   repeat: false
   notify_at: 2016-12-31 10:46:37
   sent_at: 2016-12-31 10:46:37
