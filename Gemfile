@@ -49,3 +49,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'browser-timezone-rails'
 gem 'celluloid', require: 'celluloid/current'
+gem 'chronic'
