@@ -13,5 +13,8 @@ module Notifier
     # -- all .rb files in that directory are automatically loaded.
     config.time_zone = 'UTC'
     config.active_record.time_zone_aware_types = [:datetime, :time]
+
+    config.autoload_paths +=[ "#{config.root}/app/validators/"]
+
   end
 end
