@@ -11,17 +11,14 @@ class Task
 
   attr_accessor :timer
 
-  def schedule(n, block=nil, &b)
+  def schedule(n, block=nil, title=nil, &b)
     if block_given?
       params = yield
-      @timer = after(n) {
-        puts "#{params}"
-        puts 'Here I am'
-      }
-    elsif block
+    end
+    if block
       @timer = after(n,&block)
     else
-      @timer = after(n){
+      @timer = after(n, title){
         puts "Time: #{Time.now}"
       }
     end
