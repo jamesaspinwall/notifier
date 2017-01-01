@@ -2,6 +2,8 @@ require 'test_helper'
 
 class NoticesControllerTest < ActionDispatch::IntegrationTest
 
+  # HAPPY PATH
+
   test "should get index" do
     get notices_url
     assert_response :success
@@ -45,6 +47,8 @@ class NoticesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to notices_url
   end
+
+  # RECORD NOT FOUND
 
   test "should not destroy NOT FOULD notice" do
     assert_difference('Notice.count', 0) do

@@ -28,7 +28,7 @@ class NoticesController < ApplicationController
 
     respond_to do |format|
       if @notice.save
-        format.html { redirect_to @notice, notice: 'Notice was successfully created.' }
+        format.html { redirect_to @notice, flash: {notice: 'Notice was successfully created.'} }
         format.json { render :show, status: :created, location: @notice }
       else
         format.html { render :new }
