@@ -5,7 +5,7 @@ one:
   description: MyString
   notify_chronic: 'tomorrow'
   repeat: false
-  notify_at: 2016-12-31 10:46:37
+  notify_at: <%=Time.now+1.year %>
   sent_at: 2016-12-31 10:46:37
   cancelled: 2016-12-31 10:46:37
 

@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(version: 20161231154637) do
     t.string   "description"
     t.string   "notify_chronic"
     t.boolean  "repeat"
-    t.datetime     "notify_at"
-    t.datetime     "sent_at"
-    t.datetime     "cancelled"
+    t.datetime "notify_at"
+    t.datetime "sent_at"
+    t.datetime "cancelled"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end

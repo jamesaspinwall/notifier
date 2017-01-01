@@ -8,3 +8,11 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+def notice_attr(attr = {})
+  {
+    title: 'title',
+    description: 'description',
+    notify_chronic: 'tomorrow 11 AM',
+  }.merge attr
+end

@@ -12,13 +12,6 @@ class NoticeTest < ActiveSupport::TestCase
 
   private
 
-  def notice_attr(attr = {})
-    {
-      title: 'title',
-      description: 'description',
-      notify_chronic: 'tomorrow 11 AM',
-    }.merge attr
-  end
 
   def tomorrow_11_AM
     Time.zone.now.midnight + 11.hours + 1.day

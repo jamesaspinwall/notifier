@@ -17,14 +17,15 @@ class NoticesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create notice" do
     assert_difference('Notice.count') do
-      post notices_url, params: { notice: { cancelled: @notice.cancelled, description: @notice.description, notify_at: @notice.notify_at, notify_chronic: @notice.notify_chronic, repeat: @notice.repeat, sent_at: @notice.sent_at, title: @notice.title } }
+      post notices_url, params: { notice: notice_attr }
     end
 
     assert_redirected_to notice_url(Notice.last)
   end
 
   test "should show notice" do
-    get notice_url(@notice)
+    notice = Notice.create(notice_attr)
+    get notice_url(notice)
     assert_response :success
   end
 
@@ -45,4 +46,7 @@ class NoticesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to notices_url
   end
+
+  private
+
 end
