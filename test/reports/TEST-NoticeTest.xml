@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="NoticeTest" skipped="1" failures="0" errors="0" tests="9" assertions="23" time="0.11657900037243962">
-  <testcase name="test_soonest_valid" classname="NoticeTest" assertions="5" time="0.04497200017794967">
+<testsuite name="NoticeTest" skipped="1" failures="0" errors="0" tests="9" assertions="23" time="0.04487699968740344">
+  <testcase name="test_update_nil_sent_at_validator" classname="NoticeTest" assertions="4" time="0.005869999993592501">
   </testcase>
-  <testcase name="test_my_helper" classname="NoticeTest" assertions="1" time="0.000512000173330307">
-  </testcase>
-  <testcase name="test_validator_must_be_in_the_future" classname="NoticeTest" assertions="5" time="0.006651999894529581">
-  </testcase>
-  <testcase name="test_update_valid_sent_at_validator" classname="NoticeTest" assertions="2" time="0.015273999888449907">
-  </testcase>
-  <testcase name="test_schedule_next_notice" classname="NoticeTest" assertions="0" time="0.0003519998863339424">
+  <testcase name="test_schedule_next_notice" classname="NoticeTest" assertions="0" time="0.0003459998406469822">
     <skipped type="test_schedule_next_notice"/>
   </testcase>
-  <testcase name="test_update_INVALID_sent_at_validator" classname="NoticeTest" assertions="2" time="0.030090999789536">
+  <testcase name="test_soonest_valid" classname="NoticeTest" assertions="5" time="0.011864000000059605">
   </testcase>
-  <testcase name="test_invalid_chonic" classname="NoticeTest" assertions="2" time="0.002832000143826008">
+  <testcase name="test_my_helper" classname="NoticeTest" assertions="1" time="0.00030299974605441093">
   </testcase>
-  <testcase name="test_notice1" classname="NoticeTest" assertions="2" time="0.0077320002019405365">
+  <testcase name="test_notice1" classname="NoticeTest" assertions="2" time="0.005872999783605337">
   </testcase>
-  <testcase name="test_update_nil_sent_at_validator" classname="NoticeTest" assertions="4" time="0.008162000216543674">
+  <testcase name="test_validator_must_be_in_the_future" classname="NoticeTest" assertions="5" time="0.007835000287741423">
+  </testcase>
+  <testcase name="test_invalid_chonic" classname="NoticeTest" assertions="2" time="0.003407000098377466">
+  </testcase>
+  <testcase name="test_update_valid_sent_at_validator" classname="NoticeTest" assertions="2" time="0.004972999915480614">
+  </testcase>
+  <testcase name="test_update_INVALID_sent_at_validator" classname="NoticeTest" assertions="2" time="0.004406000021845102">
   </testcase>
 </testsuite>
