@@ -6,6 +6,7 @@ class CreateNotices < ActiveRecord::Migration[5.0]
       t.string :notify_chronic
       t.boolean :repeat
       t.datetime :notify_at
+      t.datetime :scheduled_at
       t.datetime :sent_at
       t.datetime :cancelled
 

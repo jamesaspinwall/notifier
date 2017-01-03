@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20161231154637) do
     t.string   "notify_chronic"
     t.boolean  "repeat"
     t.datetime "notify_at"
+    t.datetime "scheduled_at"
     t.datetime "sent_at"
     t.datetime "cancelled"
     t.datetime "created_at",     null: false

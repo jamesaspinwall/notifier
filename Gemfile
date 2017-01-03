@@ -53,4 +53,6 @@ gem 'chronic'
 
 group :test do
   gem 'minitest-fail-fast'
+  gem 'minitest-reporters'
+  gem 'database_cleaner'
 end
