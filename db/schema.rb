@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20161231154637) do
     t.datetime "scheduled_at"
     t.datetime "sent_at"
     t.datetime "cancelled"
+    t.binary   "inst"
+    t.string   "meth"
+    t.binary   "args"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end

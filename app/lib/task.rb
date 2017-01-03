@@ -28,7 +28,10 @@ class Task
       next_notice.update(scheduled_at: Time.current)
 
       schedule(next_notice.notify_at){
-        puts "\n\nABC #{next_notice.attributes}\n" +'-'*80
+        notice = Notice.scheduled
+        #pp Notice.scheduled.attributes
+        args = Marshal.load(notice.args)
+        Marshal.load(notice.inst).send(notice.meth, *args)
       }
     end
   end

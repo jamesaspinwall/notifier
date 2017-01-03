@@ -41,7 +41,7 @@ namespace :task_test do
 
   task check4: :environment do
     Notice.destroy_all
-    2.upto(10) do |n|
+    2.upto(11) do |n|
       Notice.create notice_attr(notify_chronic: "in #{n / 2} secs")
     end
     Task.schedule_next_notice
@@ -71,6 +71,9 @@ namespace :task_test do
       title: 'title',
       description: 'description',
       notify_chronic: 'tomorrow',
+      inst: Marshal.dump(IAm.new),
+      meth: 'yes',
+      args: Marshal.dump([123, { x: 1, y: 'xxx' }])
     }.merge attr
   end
 

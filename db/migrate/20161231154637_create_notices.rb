@@ -9,6 +9,9 @@ class CreateNotices < ActiveRecord::Migration[5.0]
       t.datetime :scheduled_at
       t.datetime :sent_at
       t.datetime :cancelled
+      t.binary :inst
+      t.string :meth
+      t.binary :args
 
       t.timestamps
     end
