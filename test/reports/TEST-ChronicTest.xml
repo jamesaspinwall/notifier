@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ChronicTest" skipped="0" failures="0" errors="0" tests="3" assertions="3" time="1.5128980004228652">
+  <testcase name="test_cancel_then_schedule_new" classname="ChronicTest" assertions="1" time="0.4052260001190007">
+  </testcase>
+  <testcase name="test_scheduled_task" classname="ChronicTest" assertions="1" time="0.404942000284791">
+  </testcase>
+  <testcase name="test_cancel_scheduled_task" classname="ChronicTest" assertions="1" time="0.7027300000190735">
+  </testcase>
+</testsuite>
