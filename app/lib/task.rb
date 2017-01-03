@@ -16,7 +16,7 @@ class Task
     current.timer.cancel if current.timer
     after_block = Proc.new do
       block.call
-      Notice.scheduled.sent 
+      Notice.scheduled.sent
       schedule_next_notice
     end
     current.timer = current.after(time_to_run - Time.current, &after_block)

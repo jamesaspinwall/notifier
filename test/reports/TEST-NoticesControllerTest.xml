@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="NoticesControllerTest" skipped="0" failures="0" errors="0" tests="8" assertions="15" time="0.4687430006451905">
-  <testcase name="test_should_create_notice" classname="NoticesControllerTest" assertions="2" time="0.2808880000375211">
+<testsuite name="NoticesControllerTest" skipped="0" failures="0" errors="0" tests="8" assertions="15" time="0.5744959996081889">
+  <testcase name="test_should_not_destroy_NOT_FOULD_notice" classname="NoticesControllerTest" assertions="4" time="0.350271999835968">
   </testcase>
-  <testcase name="test_should_not_destroy_NOT_FOULD_notice" classname="NoticesControllerTest" assertions="4" time="0.0044650002382695675">
+  <testcase name="test_should_create_notice" classname="NoticesControllerTest" assertions="2" time="0.007056000176817179">
   </testcase>
-  <testcase name="test_should_get_edit" classname="NoticesControllerTest" assertions="1" time="0.14024999970570207">
+  <testcase name="test_should_destroy_notice" classname="NoticesControllerTest" assertions="4" time="0.006718999706208706">
   </testcase>
-  <testcase name="test_should_destroy_notice" classname="NoticesControllerTest" assertions="4" time="0.008200000040233135">
+  <testcase name="test_should_update_notice" classname="NoticesControllerTest" assertions="1" time="0.005954999942332506">
   </testcase>
-  <testcase name="test_should_show_notice" classname="NoticesControllerTest" assertions="1" time="0.008768000174313784">
+  <testcase name="test_should_get_index" classname="NoticesControllerTest" assertions="1" time="0.14914399990811944">
   </testcase>
-  <testcase name="test_should_update_notice" classname="NoticesControllerTest" assertions="1" time="0.006587000098079443">
+  <testcase name="test_should_show_notice" classname="NoticesControllerTest" assertions="1" time="0.009504000190645456">
   </testcase>
-  <testcase name="test_should_get_new" classname="NoticesControllerTest" assertions="1" time="0.012343000154942274">
+  <testcase name="test_should_get_new" classname="NoticesControllerTest" assertions="1" time="0.02605499979108572">
   </testcase>
-  <testcase name="test_should_get_index" classname="NoticesControllerTest" assertions="1" time="0.007242000196129084">
+  <testcase name="test_should_get_edit" classname="NoticesControllerTest" assertions="1" time="0.019791000057011843">
   </testcase>
 </testsuite>
