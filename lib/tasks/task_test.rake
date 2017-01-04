@@ -73,7 +73,7 @@ namespace :task_test do
       notify_chronic: 'tomorrow',
       inst: Marshal.dump(IAm.new),
       meth: 'yes',
-      args: Marshal.dump([123, { x: 1, y: 'xxx' }])
+      args: Marshal.dump([123, { x: 1, y: 'xxx',is: Time.current }])
     }.merge attr
   end
 
