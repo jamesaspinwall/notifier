@@ -1,4 +1,8 @@
 class Notice < ApplicationRecord
+
+  #attribute :inst, :marsh
+  #attribute :args, :marsh
+
   before_validation :set_notify_at
   validates :notify_at, presence: true
   validates :notify_at, in_the_future: true

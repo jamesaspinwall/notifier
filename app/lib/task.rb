@@ -20,22 +20,23 @@ class Task
       schedule_next_notice
     end
     current.timer = current.after(time_to_run - Time.current, &after_block)
-   end
+  end
 
   def self.schedule_next_notice
     next_notice = Notice.earliest
     if next_notice.present?
       next_notice.update(scheduled_at: Time.current)
 
-      schedule(next_notice.notify_at){
+      schedule(next_notice.notify_at) {
         notice = Notice.scheduled
-        #pp Notice.scheduled.attributes
+
+        inst = Marshal.load(notice.inst)
         args = Marshal.load(notice.args)
-        Marshal.load(notice.inst).send(notice.meth, *args)
+
+        inst.send(notice.meth, *args)
       }
     end
   end
-
 
   def cancel
     @timer.cancel

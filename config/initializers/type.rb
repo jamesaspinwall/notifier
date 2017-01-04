@@ -1,0 +1,1 @@
+ActiveRecord::Type.register(:marsh, Marsh)

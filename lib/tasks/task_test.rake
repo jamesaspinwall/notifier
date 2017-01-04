@@ -66,6 +66,29 @@ namespace :task_test do
     end
   end
 
+  task mail: :environment do
+    puts NotifierMailer.notice(subject: 'this is new', content: "Hello there").deliver!
+  end
+
+  task mail1: :environment do
+    inst = NotifierMailer.notice(subject: 'this is new', content: "Hello there")
+    puts inst.send('deliver!')
+  end
+
+  task mail_task: :environment do
+    Notice.destroy_all
+    Notice.create mailer_notice_attr(notify_chronic: 'in 1 secs')
+    Task.schedule_next_notice
+
+    sleep 10
+    Notice.all.each do |notice|
+      pp "notice.sent_at: #{notice.sent_at}"
+      raise "Error: notice.sent_at: #{notice.sent_at.inspect}" if notice.sent_at.nil?
+    end
+  end
+
+
+
   def notice_attr(attr = {})
     {
       title: 'title',
@@ -73,8 +96,20 @@ namespace :task_test do
       notify_chronic: 'tomorrow',
       inst: Marshal.dump(IAm.new),
       meth: 'yes',
-      args: Marshal.dump([123, { x: 1, y: 'xxx',is: Time.current }])
+      args: Marshal.dump([123, { x: 1, y: 'xxx', is: Time.current }])
     }.merge attr
   end
+
+  def mailer_notice_attr(attr = {})
+    {
+      title: 'title',
+      description: 'description',
+      notify_chronic: 'tomorrow',
+      inst: Marshal.dump(NotifierMailer.notice(subject: 'NotifierMailer', content: "#{Time.current}")),
+      meth: 'deliver!',
+      args: Marshal.dump([])
+    }.merge attr
+  end
+
 
 end
