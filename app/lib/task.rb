@@ -40,7 +40,7 @@ class Task
         inst = Marshal.load(notice.inst)
         args = Marshal.load(notice.args)
 
-        #inst.send(notice.meth, *args)
+        inst.send(notice.meth, *args)
        }
     end
   end

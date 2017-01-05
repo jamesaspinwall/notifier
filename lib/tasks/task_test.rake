@@ -103,7 +103,7 @@ namespace :task_test do
     Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 5 secs'))
     Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 1 secs'))
 
-    sleep 10
+    sleep 15
     Notice.all.each do |notice|
       pp "notice.sent_at: #{notice.sent_at}"
       raise "Error: notice.sent_at: #{notice.sent_at.inspect}" if notice.sent_at.nil?
