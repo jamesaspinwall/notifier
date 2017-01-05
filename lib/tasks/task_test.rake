@@ -87,7 +87,29 @@ namespace :task_test do
     end
   end
 
+  task mail_task2: :environment do
+    #require 'timers'
 
+    timers = Timers::Group.new
+
+    Time::DATE_FORMATS[:default] = '%H:%M:%S %Z'
+
+    puts "Start at: #{Time.current}"
+    Notice.destroy_all
+
+    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 4 secs'))
+    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 2 secs'))
+    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 3 secs'))
+    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 5 secs'))
+    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 1 secs'))
+
+    sleep 30
+    Notice.all.each do |notice|
+      pp "notice.sent_at: #{notice.sent_at}"
+      raise "Error: notice.sent_at: #{notice.sent_at.inspect}" if notice.sent_at.nil?
+    end
+    puts "End at: #{Time.current}"
+  end
 
   def notice_attr(attr = {})
     {
@@ -109,6 +131,25 @@ namespace :task_test do
       meth: 'deliver!',
       args: Marshal.dump([])
     }.merge attr
+  end
+
+  def show_notices
+    puts "Sent at: #{Time.current}"
+    Notice.all.order(:id).each do |notice|
+      attr = notice.attributes
+      attr.delete('inst')
+      attr.delete('meth')
+      attr.delete('args')
+      attr.delete('created_at')
+      attr.delete('updated_at')
+      attr.delete('title')
+      attr.delete('description')
+      attr.delete('repeat')
+      attr.delete('id')
+      attr.delete('cancelled')
+      puts attr
+    end
+    puts '-'*120
   end
 
 

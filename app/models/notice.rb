@@ -16,7 +16,7 @@ class Notice < ApplicationRecord
   end
 
   def self.earliest
-    where(scheduled_at:nil, sent_at: nil).order(:notify_at).first
+    where(scheduled_at: nil, sent_at: nil).order(:notify_at).first
   end
 
   def self.scheduled
@@ -24,6 +24,11 @@ class Notice < ApplicationRecord
   end
 
   def sent
-    update!(sent_at: Time.current, scheduled_at:nil)
+    update!(sent_at: Time.current, scheduled_at: nil)
+  end
+
+  def self.cancel_scheduled
+    n = self.scheduled
+    n.update!(scheduled_at: nil) if n.present?
   end
 end
