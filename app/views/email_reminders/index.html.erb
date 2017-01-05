@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Email Reminders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Chronic</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @email_reminders.each do |email_reminder| %>
+      <tr>
+        <td><%= email_reminder.chronic %></td>
+        <td><%= email_reminder.title %></td>
+        <td><%= email_reminder.description %></td>
+        <td><%= link_to 'Show', email_reminder %></td>
+        <td><%= link_to 'Edit', edit_email_reminder_path(email_reminder) %></td>
+        <td><%= link_to 'Destroy', email_reminder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Email Reminder', new_email_reminder_path %>

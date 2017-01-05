@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Chronic:</strong>
+  <%= @email_reminder.chronic %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @email_reminder.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @email_reminder.description %>
+</p>
+
+<%= link_to 'Edit', edit_email_reminder_path(@email_reminder) %> |
+<%= link_to 'Back', email_reminders_path %>

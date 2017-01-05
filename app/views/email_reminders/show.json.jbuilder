@@ -1,0 +1,1 @@
+json.partial! "email_reminders/email_reminder", email_reminder: @email_reminder

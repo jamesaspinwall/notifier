@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="EmailRemindersControllerTest" skipped="0" failures="0" errors="1" tests="1" assertions="0" time="44.6881969999522">
+  <testcase name="test_create" classname="EmailRemindersControllerTest" assertions="0" time="44.6881969999522">
+    <error type="test_create" message="Celluloid::DeadActorError: attempted to call a dead actor: nil?...">
+Failure:
+test_create(EmailRemindersControllerTest) [/Users/jaspinwall/git/notifier/test/controllers/email_reminders_controller_test.rb:18]:
+Celluloid::DeadActorError: attempted to call a dead actor: nil?
+    app/lib/task.rb:5:in `current'
+    app/lib/task.rb:16:in `schedule'
+    app/lib/task.rb:37:in `schedule_next_notice'
+    app/models/email_reminder.rb:20:in `schedule_task'
+    app/controllers/email_reminders_controller.rb:30:in `block in create'
+    app/controllers/email_reminders_controller.rb:29:in `create'
+    test/controllers/email_reminders_controller_test.rb:19:in `block (2 levels) in &lt;class:EmailRemindersControllerTest&gt;'
+    test/controllers/email_reminders_controller_test.rb:18:in `block in &lt;class:EmailRemindersControllerTest&gt;'
+    </error>
+  </testcase>
+</testsuite>
