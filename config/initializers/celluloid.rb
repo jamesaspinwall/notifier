@@ -1,1 +1,1 @@
-Celluloid.shutdown_timeout = 0.01 if defined? Celluloid
+Celluloid.shutdown_timeout = 0.001 if defined? Celluloid

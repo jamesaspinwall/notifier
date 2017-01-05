@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161231154637) do
+ActiveRecord::Schema.define(version: 20170105110835) do
+
+  create_table "email_reminders", force: :cascade do |t|
+    t.string   "chronic"
+    t.string   "title"
+    t.text     "description"
+    t.integer  "notice_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["notice_id"], name: "index_email_reminders_on_notice_id"
+  end
 
   create_table "notices", force: :cascade do |t|
     t.string   "title"
