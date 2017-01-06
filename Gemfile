@@ -56,3 +56,6 @@ group :test do
   gem 'minitest-reporters'
   gem 'database_cleaner'
 end
+
+gem "responders"
+

@@ -1,5 +1,6 @@
 class EmailRemindersController < ApplicationController
   before_action :set_email_reminder, only: [:show, :edit, :update, :destroy]
+  respond_to :html, :json
 
   # GET /email_reminders
   # GET /email_reminders.json
@@ -25,50 +26,33 @@ class EmailRemindersController < ApplicationController
   # POST /email_reminders.json
   def create
     @email_reminder = EmailReminder.new(email_reminder_params)
-
-    respond_to do |format|
-      if @email_reminder.save
-        format.html { redirect_to @email_reminder, notice: 'Email reminder was successfully created.' }
-        format.json { render :show, status: :created, location: @email_reminder }
-      else
-        format.html { render :new }
-        format.json { render json: @email_reminder.errors, status: :unprocessable_entity }
-      end
-    end
+    @email_reminder.save
+    respond_with @email_reminder
   end
 
   # PATCH/PUT /email_reminders/1
   # PATCH/PUT /email_reminders/1.json
   def update
-    respond_to do |format|
-      if @email_reminder.update(email_reminder_params)
-        format.html { redirect_to @email_reminder, notice: 'Email reminder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @email_reminder }
-      else
-        format.html { render :edit }
-        format.json { render json: @email_reminder.errors, status: :unprocessable_entity }
-      end
-    end
+    @email_reminder.update(email_reminder_params)
+    respond_with @email_reminder
   end
 
   # DELETE /email_reminders/1
   # DELETE /email_reminders/1.json
   def destroy
     @email_reminder.destroy
-    respond_to do |format|
-      format.html { redirect_to email_reminders_url, notice: 'Email reminder was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    respond_with @email_reminder
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_email_reminder
-      @email_reminder = EmailReminder.find(params[:id])
-    end
+  def set_email_reminder
+    @email_reminder = EmailReminder.find(params[:id])
+  rescue => e
+    flash[:error] = e.message
+    redirect_to email_reminders_path
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def email_reminder_params
-      params.require(:email_reminder).permit(:chronic, :title, :description)
-    end
+  def email_reminder_params
+    params.require(:email_reminder).permit(:chronic, :title, :description)
+  end
 end

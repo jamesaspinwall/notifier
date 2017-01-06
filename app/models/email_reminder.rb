@@ -1,5 +1,7 @@
 class EmailReminder < ApplicationRecord
 
+  validates :title, presence: true
+
   belongs_to :notice, optional: true
 
   before_create :schedule_task
