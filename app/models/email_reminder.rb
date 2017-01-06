@@ -4,18 +4,17 @@ class EmailReminder < ApplicationRecord
 
   belongs_to :notice, optional: true
 
-  before_create :schedule_task
+  after_create :schedule_task
 
   def schedule_task
     attrs = {
-      title: 'EmailReminder',
+      title: 'EmailReminderService',
       description: self.title,
       notify_chronic: self.chronic,
-      inst: Marshal.dump(NotifierMailer.notice(subject: self.title, content: self.description)),
-      meth: 'deliver!',
-      args: Marshal.dump([])
+      inst: Marshal.dump(EmailReminderService.new),
+      meth: 'mail',
+      args: Marshal.dump([self.id])
     }
-    #binding.pry
     self.notice = Notice.create(attrs)
 
 
