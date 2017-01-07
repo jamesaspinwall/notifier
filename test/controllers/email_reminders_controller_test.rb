@@ -18,6 +18,7 @@ class EmailRemindersControllerTest < ActionDispatch::IntegrationTest
     assert_difference('EmailReminder.count') do
       post email_reminders_url, params: {email_reminder: attrs}
       puts flash.inspect
+      sleep 2
     end
 
     assert_redirected_to email_reminder_url(EmailReminder.last)

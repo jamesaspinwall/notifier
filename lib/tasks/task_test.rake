@@ -111,6 +111,23 @@ namespace :task_test do
     puts "End at: #{Time.current}"
   end
 
+  task send_reminder: :environment do
+    count = EmailReminder.count
+    EmailReminder.create_with_task(email_reminder_attrs)
+    raise "Error EmailReminder count hasn't been incremented" unless EmailReminder.count == count + 1
+    sleep 3
+  end
+
+
+  def email_reminder_attrs
+    {
+      chronic: 'in 1 sec',
+      title: 'I am title',
+      description: 'I am a little lamb'
+    }
+  end
+
+
   def notice_attr(attr = {})
     {
       title: 'title',

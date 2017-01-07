@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20170105110835) do
     t.string   "chronic"
     t.string   "title"
     t.text     "description"
+    t.datetime "send_at"
     t.integer  "notice_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
