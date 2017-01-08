@@ -13,9 +13,7 @@ class Task
 
   def self.schedule(time_to_run, &block)
     raise "not a time" unless time_to_run.is_a?(Time)
-    puts "current.timer: #{current.timer.inspect}"
      if current.timer
-#       puts "Cancel current timer"
        current.timer.cancel
      end
 

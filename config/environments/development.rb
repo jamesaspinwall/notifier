@@ -26,7 +26,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  if false
+  if true
     config.action_mailer.smtp_settings = {
       address: "smtp.gmail.com",
       port: 587,
