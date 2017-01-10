@@ -1,2 +1,3 @@
 class Context < ApplicationRecord
+
 end

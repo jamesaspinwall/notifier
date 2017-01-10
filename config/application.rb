@@ -26,5 +26,7 @@ module Notifier
     ]
 
     #config.autoload_paths << "#{Rails.root}/services"
+    config.time_zone = 'Eastern Time (US & Canada)'
+
   end
 end
