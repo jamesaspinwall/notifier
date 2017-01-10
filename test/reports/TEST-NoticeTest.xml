@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="NoticeTest" skipped="1" failures="0" errors="0" tests="9" assertions="23" time="0.0768619840964675">
+  <testcase name="test_update_INVALID_sent_at_validator" classname="NoticeTest" assertions="2" time="0.005590580054558814">
+  </testcase>
+  <testcase name="test_my_helper" classname="NoticeTest" assertions="1" time="0.000334865995682776">
+  </testcase>
+  <testcase name="test_update_nil_sent_at_validator" classname="NoticeTest" assertions="4" time="0.007930469000712037">
+  </testcase>
+  <testcase name="test_update_valid_sent_at_validator" classname="NoticeTest" assertions="2" time="0.005382828996516764">
+  </testcase>
+  <testcase name="test_soonest_valid" classname="NoticeTest" assertions="5" time="0.03503289201762527">
+  </testcase>
+  <testcase name="test_validator_must_be_in_the_future" classname="NoticeTest" assertions="5" time="0.006402413011528552">
+  </testcase>
+  <testcase name="test_schedule_next_notice" classname="NoticeTest" assertions="0" time="0.0003825549501925707">
+    <skipped type="test_schedule_next_notice"/>
+  </testcase>
+  <testcase name="test_notice1" classname="NoticeTest" assertions="2" time="0.012406671070493758">
+  </testcase>
+  <testcase name="test_invalid_chonic" classname="NoticeTest" assertions="2" time="0.003398708999156952">
+  </testcase>
+</testsuite>

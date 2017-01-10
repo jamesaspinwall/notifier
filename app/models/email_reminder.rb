@@ -16,7 +16,7 @@ class EmailReminder < ApplicationRecord
       title: reminder.title,
       description: 'created by EmailReminder',
       notify_at: Chronic.parse(reminder.chronic),
-      inst: Marshal.dump(EmailReminderService.new),
+      inst: Marshal.dump(EmailReminderService),
       meth: 'mail',
       args: nil
     })

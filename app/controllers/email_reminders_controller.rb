@@ -25,10 +25,7 @@ class EmailRemindersController < ApplicationController
   # POST /email_reminders
   # POST /email_reminders.json
   def create
-    @email_reminder = EmailReminder.new(email_reminder_params)
-    if @email_reminder.save
-      @email_reminder.schedule_task
-    end
+    @email_reminder = EmailReminder.create_notice(email_reminder_params)
     respond_with @email_reminder
   end
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="IAmTest" skipped="0" failures="0" errors="1" tests="1" assertions="0" time="0.0011891870526596904">
+  <testcase name="test_I_am" classname="IAmTest" assertions="0" time="0.0011891870526596904">
+    <error type="test_I_am" message="ArgumentError: wrong number of arguments (given 0, expected 2)...">
+Failure:
+test_I_am(IAmTest) [/Users/jaspinwa/git/notifier/app/lib/i_am.rb:6]:
+ArgumentError: wrong number of arguments (given 0, expected 2)
+    app/lib/i_am.rb:6:in `yes'
+    test/lib/i_am_test.rb:6:in `block in &lt;class:IAmTest&gt;'
+    </error>
+  </testcase>
+</testsuite>

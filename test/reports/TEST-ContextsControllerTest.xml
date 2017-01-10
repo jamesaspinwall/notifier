@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ContextsControllerTest" skipped="0" failures="0" errors="7" tests="7" assertions="0" time="0.004989080945961177">
+  <testcase name="test_should_destroy_context" classname="ContextsControllerTest" assertions="0" time="0.0007335010450333357">
+    <error type="test_should_destroy_context" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa813f2fa18&gt;...">
+Failure:
+test_should_destroy_context(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa813f2fa18&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_get_new" classname="ContextsControllerTest" assertions="0" time="0.0005435339407995343">
+    <error type="test_should_get_new" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa81407b3b8&gt;...">
+Failure:
+test_should_get_new(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa81407b3b8&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_get_edit" classname="ContextsControllerTest" assertions="0" time="0.0017811079742386937">
+    <error type="test_should_get_edit" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a017570&gt;...">
+Failure:
+test_should_get_edit(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a017570&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_update_context" classname="ContextsControllerTest" assertions="0" time="0.00044926395639777184">
+    <error type="test_should_update_context" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a355750&gt;...">
+Failure:
+test_should_update_context(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a355750&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_get_index" classname="ContextsControllerTest" assertions="0" time="0.0004373770207166672">
+    <error type="test_should_get_index" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80e069678&gt;...">
+Failure:
+test_should_get_index(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80e069678&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_create_context" classname="ContextsControllerTest" assertions="0" time="0.0006071729585528374">
+    <error type="test_should_create_context" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80aaa8458&gt;...">
+Failure:
+test_should_create_context(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80aaa8458&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_show_context" classname="ContextsControllerTest" assertions="0" time="0.00043712405022233725">
+    <error type="test_should_show_context" message="NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a5b6f30&gt;...">
+Failure:
+test_should_show_context(ContextsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `contexts' for #&lt;ContextsControllerTest:0x007fa80a5b6f30&gt;
+    test/controllers/contexts_controller_test.rb:5:in `block in &lt;class:ContextsControllerTest&gt;'
+    </error>
+  </testcase>
+</testsuite>

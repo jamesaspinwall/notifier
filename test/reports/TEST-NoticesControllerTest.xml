@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="NoticesControllerTest" skipped="0" failures="0" errors="0" tests="8" assertions="15" time="0.12230700394138694">
+  <testcase name="test_should_get_index" classname="NoticesControllerTest" assertions="1" time="0.011468374985270202">
+  </testcase>
+  <testcase name="test_should_create_notice" classname="NoticesControllerTest" assertions="2" time="0.00800857599824667">
+  </testcase>
+  <testcase name="test_should_update_notice" classname="NoticesControllerTest" assertions="1" time="0.01630613999441266">
+  </testcase>
+  <testcase name="test_should_destroy_notice" classname="NoticesControllerTest" assertions="4" time="0.010559831047430634">
+  </testcase>
+  <testcase name="test_should_get_new" classname="NoticesControllerTest" assertions="1" time="0.024635505978949368">
+  </testcase>
+  <testcase name="test_should_show_notice" classname="NoticesControllerTest" assertions="1" time="0.01740202901419252">
+  </testcase>
+  <testcase name="test_should_get_edit" classname="NoticesControllerTest" assertions="1" time="0.02934239897876978">
+  </testcase>
+  <testcase name="test_should_not_destroy_NOT_FOULD_notice" classname="NoticesControllerTest" assertions="4" time="0.004584147944115102">
+  </testcase>
+</testsuite>

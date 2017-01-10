@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  context: one
+  title: MyString
+  tags: 
+  description: MyText
+  show_at: MyString
+  complete_at: MyString
+
+two:
+  context: two
+  title: MyString
+  tags: 
+  description: MyText
+  show_at: MyString
+  complete_at: MyString

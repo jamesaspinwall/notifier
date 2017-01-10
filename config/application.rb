@@ -17,7 +17,14 @@ module Notifier
     config.time_zone = 'UTC'
     config.active_record.time_zone_aware_types = [:datetime, :time]
 
-    config.autoload_paths +=[ "#{config.root}/app/validators/","#{config.root}/app/models/types/"]
+    config.autoload_paths +=[
+      "#{config.root}/app/validators/",
+      "#{config.root}/app/models/types/",
+      "#{config.root}/app/attrs/",
+      "#{config.root}/app/services/",
+      "#{config.root}/lib/"
+    ]
 
+    #config.autoload_paths << "#{Rails.root}/services"
   end
 end

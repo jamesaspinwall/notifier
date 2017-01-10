@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170105110835) do
+ActiveRecord::Schema.define(version: 20170108161440) do
+
+  create_table "contexts", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "email_reminders", force: :cascade do |t|
     t.string   "chronic"
+    t.datetime "send_at"
     t.string   "title"
     t.text     "description"
-    t.datetime "send_at"
     t.integer  "notice_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -37,6 +43,34 @@ ActiveRecord::Schema.define(version: 20170105110835) do
     t.binary   "args"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags_todos", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "todo_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_tags_todos_on_tag_id"
+    t.index ["todo_id"], name: "index_tags_todos_on_todo_id"
+  end
+
+  create_table "todos", force: :cascade do |t|
+    t.integer  "context_id"
+    t.string   "title"
+    t.integer  "tags_id"
+    t.text     "description"
+    t.datetime "show_at"
+    t.datetime "complete_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["context_id"], name: "index_todos_on_context_id"
+    t.index ["tags_id"], name: "index_todos_on_tags_id"
   end
 
 end

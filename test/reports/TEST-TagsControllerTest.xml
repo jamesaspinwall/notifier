@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="TagsControllerTest" skipped="0" failures="0" errors="7" tests="7" assertions="0" time="0.004134693183004856">
+  <testcase name="test_should_get_index" classname="TagsControllerTest" assertions="0" time="0.0005554400850087404">
+    <error type="test_should_get_index" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8134e37d0&gt;...">
+Failure:
+test_should_get_index(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8134e37d0&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_create_tag" classname="TagsControllerTest" assertions="0" time="0.0006037040147930384">
+    <error type="test_should_create_tag" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa813515348&gt;...">
+Failure:
+test_should_create_tag(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa813515348&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_get_edit" classname="TagsControllerTest" assertions="0" time="0.0005148190539330244">
+    <error type="test_should_get_edit" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814be3ae8&gt;...">
+Failure:
+test_should_get_edit(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814be3ae8&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_update_tag" classname="TagsControllerTest" assertions="0" time="0.0005417530192062259">
+    <error type="test_should_update_tag" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814b7ae08&gt;...">
+Failure:
+test_should_update_tag(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814b7ae08&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_show_tag" classname="TagsControllerTest" assertions="0" time="0.0005584839964285493">
+    <error type="test_should_show_tag" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814a89b20&gt;...">
+Failure:
+test_should_show_tag(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa814a89b20&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_destroy_tag" classname="TagsControllerTest" assertions="0" time="0.0005390769802033901">
+    <error type="test_should_destroy_tag" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8149946c0&gt;...">
+Failure:
+test_should_destroy_tag(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8149946c0&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+  <testcase name="test_should_get_new" classname="TagsControllerTest" assertions="0" time="0.0008214160334318876">
+    <error type="test_should_get_new" message="NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8148505e8&gt;...">
+Failure:
+test_should_get_new(TagsControllerTest) [/Users/jaspinwa/.rvm/gems/ruby-2.3.1@rails-5.0.0.1/gems/actionpack-5.0.1/lib/action_dispatch/testing/assertions/routing.rb:172]:
+NoMethodError: undefined method `tags' for #&lt;TagsControllerTest:0x007fa8148505e8&gt;
+    test/controllers/tags_controller_test.rb:5:in `block in &lt;class:TagsControllerTest&gt;'
+    </error>
+  </testcase>
+</testsuite>
