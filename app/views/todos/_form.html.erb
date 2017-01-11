@@ -21,12 +21,11 @@
     <%= f.text_field :title %>
   </div>
 
-  <div class="field">
-    <%= f.label :tags %>
-    <%= f.text_field :tags %>
-  </div>
+    <%= f.fields_for :tag do |ff| %>
+        Tag: <%= ff.text_field :name %>
+    <% end %>
 
-  <div class="field">
+    <div class="field">
     <%= f.label :description %>
     <%= f.text_area :description %>
   </div>
