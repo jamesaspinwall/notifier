@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170110015534) do
 
-  create_table "contexts", force: :cascade do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -59,16 +59,14 @@ ActiveRecord::Schema.define(version: 20170110015534) do
   end
 
   create_table "todos", force: :cascade do |t|
-    t.integer  "context_id"
+    t.integer  "category_id"
     t.string   "title"
-    t.integer  "tags_id"
     t.text     "description"
     t.datetime "show_at"
     t.datetime "complete_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["context_id"], name: "index_todos_on_context_id"
-    t.index ["tags_id"], name: "index_todos_on_tags_id"
+    t.index ["category_id"], name: "index_todos_on_category_id"
   end
 
 end

@@ -39,7 +39,7 @@ class TodoTest < ActiveSupport::TestCase
 
     todo = Todo.first
     assert_equal 3, todo.tags.count
-    refute_nil todo.context
+    refute_nil todo.category
 
     tag_attrs = Attrs.tag
     todo.update(tags_attributes: [tag_attrs])

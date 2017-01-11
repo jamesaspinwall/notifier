@@ -7,8 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 %w{home work hobby project}.each do |name|
-  puts "Context.create in #{Rails.env}"
-  Context.create(name: name)
+  puts "Category.create in #{Rails.env}"
+  Category.create(name: name)
 end
 
 %w{clean meet call}.each do |name|

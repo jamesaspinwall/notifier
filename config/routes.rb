@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :tags
-  resources :contexts
+  resources :categories
   resources :todos
   resources :email_reminders
   resources :notices

@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :context_id %>
-    <%= f.text_field :context_id %>
+    <%= f.label :category_id %>
+    <%= binding.pry; f.collection_select(:category_id, Category.all, :id, :name, include_blank: true) %>
   </div>
 
   <div class="field">

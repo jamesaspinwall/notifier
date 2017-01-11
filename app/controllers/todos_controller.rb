@@ -9,6 +9,7 @@ class TodosController < ApplicationController
   end
 
   def show
+    category = Category.all
     respond_with(@todo)
   end
 

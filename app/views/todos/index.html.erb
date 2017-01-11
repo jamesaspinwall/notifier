@@ -5,7 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th>Context</th>
+      <th>Category</th>
       <th>Title</th>
       <th>Tags</th>
       <th>Description</th>
@@ -18,7 +18,7 @@
   <tbody>
     <% @todos.each do |todo| %>
       <tr>
-        <td><%= todo.context %></td>
+        <td><%= todo.category %></td>
         <td><%= todo.title %></td>
         <td><%= todo.tags %></td>
         <td><%= todo.description %></td>

@@ -32,7 +32,7 @@ class EmailReminder < ApplicationRecord
   def set_send_at
     if self.chronic_changed?
       Chronic.time_class = Time.zone
-      self.send_at = Chronic.parse(self.chronic, context: :future)
+      self.send_at = Chronic.parse(self.chronic, category: :future)
     end
   end
 end

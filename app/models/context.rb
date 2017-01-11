@@ -1,3 +1,0 @@
-class Context < ApplicationRecord
-
-end

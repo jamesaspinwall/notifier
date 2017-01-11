@@ -12,7 +12,7 @@ class Notice < ApplicationRecord
   def set_notify_at
     if self.notify_chronic_changed?
       Chronic.time_class = Time.zone
-      self.notify_at = Chronic.parse(self.notify_chronic, context: :future)
+      self.notify_at = Chronic.parse(self.notify_chronic, category: :future)
     end
   end
 

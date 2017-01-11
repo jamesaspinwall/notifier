@@ -5,13 +5,13 @@ class ContextTest < ActiveSupport::TestCase
     context = nil
 
     assert_difference 'Context.count' do
-      context = Context.create(Attrs.context)
+      context = Category.create(Attrs.context)
     end
 
-    assert_equal context, Context.find(context.id)
+    assert_equal context, Category.find(context.id)
 
     context.update(name: 'xxx')
-    assert_equal 'xxx', Context.find(context.id).name
+    assert_equal 'xxx', Category.find(context.id).name
 
     assert_difference 'Context.count', -1 do
       context.destroy

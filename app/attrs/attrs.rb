@@ -5,14 +5,14 @@ module Attrs
       description: 'Just description',
       show_at: Time.current,
       complete_at: nil,
-      #belongs_to: context,
+      #belongs_to: category,
       #has_and_belongs_to_many: tags
     }.merge attrs
   end
 
-  def self.context(attrs = {})
+  def self.category(attrs = {})
     {
-      name: "Context name at #{Time.current}"
+      name: "Category name at #{Time.current}"
     }.merge(attrs)
   end
 

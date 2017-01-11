@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ContextsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @context = contexts(:one)
+    category = contexts(:one)
   end
 
   test "should get index" do
@@ -17,30 +17,30 @@ class ContextsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create context" do
     assert_difference('Context.count') do
-      post contexts_url, params: { context: { name: @context.name } }
+      post contexts_url, params: {category: {name: category.name } }
     end
 
-    assert_redirected_to context_url(Context.last)
+    assert_redirected_to context_url(Category.last)
   end
 
   test "should show context" do
-    get context_url(@context)
+    get context_url(category)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_context_url(@context)
+    get edit_context_url(category)
     assert_response :success
   end
 
   test "should update context" do
-    patch context_url(@context), params: { context: { name: @context.name } }
-    assert_redirected_to context_url(@context)
+    patch context_url(category), params: {category: {name: category.name } }
+    assert_redirected_to context_url(category)
   end
 
   test "should destroy context" do
     assert_difference('Context.count', -1) do
-      delete context_url(@context)
+      delete context_url(category)
     end
 
     assert_redirected_to contexts_url
