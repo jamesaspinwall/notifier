@@ -1,24 +1,25 @@
 module Attrs
-  def self.todo(attrs = {})
+  def todo_attrs(attrs = {})
     {
       title: "Todo created at #{Time.current}",
       description: 'Just description',
       show_at: Time.current,
-      complete_at: nil,
+      complete_at: Time.current + 1.day,
       #belongs_to: category,
       #has_and_belongs_to_many: tags
-    }.merge attrs
+    }.deep_merge attrs
   end
 
-  def self.category(attrs = {})
+  def category_attrs(attrs = {})
     {
       name: "Category name at #{Time.current}"
-    }.merge(attrs)
+    }.deep_merge(attrs)
   end
 
-  def self.tag(attrs = {})
+  def tag_attrs(attrs = {})
     {
       name: "tag name at #{Time.current}"
-    }.merge attrs
+    }.deep_merge attrs
   end
 end
+

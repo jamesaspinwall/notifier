@@ -11,10 +11,12 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
-def notice_attr(attr = {})
-  {
-    title: 'title',
-    description: 'description',
-    notify_chronic: 'tomorrow',
-  }.merge attr
+Dir[Rails.root.join("test/support/**/*.rb")].each { |f| require f }
+
+module Minitest
+  class Test
+    include Attrs
+    #include Attrs::Person
+  end
 end
+

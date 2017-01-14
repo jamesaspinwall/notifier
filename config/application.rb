@@ -20,11 +20,13 @@ module Notifier
     config.autoload_paths +=[
       "#{config.root}/app/validators/",
       "#{config.root}/app/models/types/",
-      "#{config.root}/app/attrs/",
       "#{config.root}/app/services/",
       "#{config.root}/lib/"
     ]
 
+    config.autoload_paths += [
+      "#{config.root}/test/support/",
+    ] if %w(development test).include? Rails.env
     #config.autoload_paths << "#{Rails.root}/services"
     config.time_zone = 'Eastern Time (US & Canada)'
 
