@@ -2,7 +2,7 @@
 
 <p>
   <strong>Category:</strong>
-  <%= @todo.category %>
+  <%= @todo.category.try(:name) %>
 </p>
 
 <p>
@@ -12,7 +12,7 @@
 
 <p>
   <strong>Tags:</strong>
-  <%= @todo.tags %>
+  <%= @todo.tags.map(&:name).join(', ') %>
 </p>
 
 <p>

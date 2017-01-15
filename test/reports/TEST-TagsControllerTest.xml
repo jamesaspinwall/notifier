@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TagsControllerTest" skipped="0" failures="0" errors="0" tests="1" assertions="2" time="0.4045360004529357">
-  <testcase name="test_should_create_tag" classname="TagsControllerTest" assertions="2" time="0.4045360004529357">
-  </testcase>
-</testsuite>

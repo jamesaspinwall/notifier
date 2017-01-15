@@ -4,7 +4,7 @@ class TodosController < ApplicationController
   respond_to :html
 
   def index
-    @todos = Todo.all
+    @todos = params[:all].present? ? Todo.all : Todo.active.showable
     respond_with(@todos)
   end
 
