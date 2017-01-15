@@ -20,3 +20,9 @@ module Minitest
   end
 end
 
+module ActionDispatch
+  class IntegrationTest
+    include Attrs
+  end
+end
+

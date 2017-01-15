@@ -2,73 +2,68 @@ require 'test_helper'
 
 class TodoTest < ActiveSupport::TestCase
 
-  test 'abc' do
-    puts person_attrs
-  end
-
   test 'CRUD' do
-    todo = nil
+    id = nil
     attrs = todo_attrs(category_attributes: category_attrs)
 
     # CREATE
     assert_difference 'Todo.count' do
-      Todo.create(attrs)
+      id = Todo.create(attrs).id
     end
 
     # RETRIEVE
-    todo = Todo.last
+    todo = Todo.find(id)
     attrs.each do |k, v|
-      if k.to_s =~ /(.*)_attributes$/
-        v.each{|k,v|
-          assert_equal v,todo.send($1)[k]
-        }
-      else
+      unless k.to_s =~ /(.*)_attributes$/
         assert_equal v, todo[k]
+      else
+        v.each do |k, v|
+          assert_equal v, todo.send($1)[k]
+        end
       end
     end
 
     # UPDATE
-    todo.update(title: 'xxx')
-    assert_equal 'xxx', Todo.find(todo.id).title
+    Todo.find(id).update(title: 'xxx')
+    assert_equal 'xxx', Todo.find(id).title
+
     # DESTROY
     assert_difference 'Todo.count', -1 do
-      todo.destroy
+      Todo.find(id).destroy
     end
   end
 
   test 'append tag to todo' do
-    t = Todo.create(Attrs.todo(context_attributes: Attrs.category))
-    puts t.errors.messages if t.errors.present?
-
-    t.tags << Tag.create(Attrs.tag)
-    t.save
-    assert_equal 1, Todo.last.tags.count
+    assert_difference 'Todo.count' do
+      todo = Todo.create todo_attrs(category_attributes: category_attrs, tags_attributes: [tag_attrs])
+      assert_equal 1, todo.tags.count
+    end
   end
 
   test 'accepts_nested_attributes_for tags an category' do
     assert_difference 'Todo.count' do
       Todo.create(
-        Attrs.todo(
-          tags_attributes: [Attrs.tag, Attrs.tag, Attrs.tag],
-          context_attributes: Attrs.category
+        todo_attrs(
+          tags_attributes: [tag_attrs, tag_attrs, tag_attrs],
+          category_attributes: category_attrs
         )
-      ).is_a?(Todo)
+      )
     end
 
     todo = Todo.first
     assert_equal 3, todo.tags.count
     refute_nil todo.category
 
-    tag_attrs = Attrs.tag
-    todo.update(tags_attributes: [tag_attrs])
+    assert_difference 'todo.tags.count' do
+      todo.update(tags_attributes: [tag_attrs])
+      assert_equal 4, todo.tags.count
+    end
+
+    attrs = todo.tags.last.attributes
+    attrs[:name] = 'xxx'
+    todo.update(tags_attributes: [attrs])
     assert_equal 4, todo.tags.count
-
-    tag_attrs = todo.tags.last.attributes
-    tag_attrs[:name] = 'xxx'
-    todo.update(tags_attributes: [tag_attrs])
-    assert_equal 4, todo.tags.count
-
-
+    assert_equal attrs[:name], Tag.order(:updated_at).last.name
   end
 
 end

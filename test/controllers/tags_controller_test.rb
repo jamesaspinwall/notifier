@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @tag = tags(:one)
-  end
 
   test "should get index" do
     get tags_url
@@ -17,7 +14,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create tag" do
     assert_difference('Tag.count') do
-      post tags_url, params: { tag: { name: @tag.name } }
+      post tags_url, params: {tag: tag_attrs}
     end
 
     assert_redirected_to tag_url(Tag.last)

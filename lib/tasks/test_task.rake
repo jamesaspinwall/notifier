@@ -3,7 +3,7 @@ namespace :test_task do
   desc "TODO"
   task check1: :environment do
     Notice.destroy_all
-    Notice.create notice_attr(notify_chronic: 'in 1 secs')
+    Notice.create notice_attrs(notify_chronic: 'in 1 secs')
     Task.schedule_next_notice
 
     sleep 2
@@ -15,8 +15,8 @@ namespace :test_task do
 
   task check2: :environment do
     Notice.destroy_all
-    Notice.create notice_attr(notify_chronic: 'in 1 secs')
-    Notice.create notice_attr(notify_chronic: 'in 2 secs')
+    Notice.create notice_attrs(notify_chronic: 'in 1 secs')
+    Notice.create notice_attrs(notify_chronic: 'in 2 secs')
     Task.schedule_next_notice
 
     sleep 3
@@ -29,7 +29,7 @@ namespace :test_task do
   task check3: :environment do
     Notice.destroy_all
     1.upto(10) do |n|
-      Notice.create notice_attr(notify_chronic: "in #{n} secs")
+      Notice.create notice_attrs(notify_chronic: "in #{n} secs")
     end
     Task.schedule_next_notice
 
@@ -42,7 +42,7 @@ namespace :test_task do
   task check4: :environment do
     Notice.destroy_all
     2.upto(11) do |n|
-      Notice.create notice_attr(notify_chronic: "in #{n / 2} secs")
+      Notice.create notice_attrs(notify_chronic: "in #{n / 2} secs")
     end
     Task.schedule_next_notice
 
@@ -55,7 +55,7 @@ namespace :test_task do
   task check5: :environment do
     Notice.destroy_all
     10.downto(1) do |n|
-      Notice.create notice_attr(notify_chronic: "in #{n} secs")
+      Notice.create notice_attrs(notify_chronic: "in #{n} secs")
     end
     Task.schedule_next_notice
 
@@ -77,7 +77,7 @@ namespace :test_task do
 
   task mail_task: :environment do
     Notice.destroy_all
-    Notice.create mailer_notice_attr(notify_chronic: 'in 1 secs')
+    Notice.create mailer_notice_attrs(notify_chronic: 'in 1 secs')
     Task.schedule_next_notice
 
     sleep 10
@@ -97,11 +97,11 @@ namespace :test_task do
     puts "Start at: #{Time.current}"
     Notice.destroy_all
 
-    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 4 secs'))
-    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 2 secs'))
-    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 3 secs'))
-    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 5 secs'))
-    Task.schedule_notice(mailer_notice_attr(notify_chronic: 'in 1 secs'))
+    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 4 secs'))
+    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 2 secs'))
+    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 3 secs'))
+    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 5 secs'))
+    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 1 secs'))
 
     sleep 15
     Notice.all.each do |notice|
@@ -130,36 +130,6 @@ namespace :test_task do
     EmailReminder.create_notice(email_reminder_attrs({chronic: 'in 10 secs'}))
   end
 
-  def email_reminder_attrs(attrs = {})
-    {
-      chronic: 'in 1 sec',
-      title: 'I am title',
-      description: 'I am a little lamb'
-    }.merge attrs
-  end
-
-
-  def notice_attr(attr = {})
-    {
-      title: 'title',
-      description: 'description',
-      notify_chronic: 'tomorrow',
-      inst: Marshal.dump(IAm.new),
-      meth: 'yes',
-      args: Marshal.dump([123, { x: 1, y: 'xxx', is: Time.current }])
-    }.merge attr
-  end
-
-  def mailer_notice_attr(attr = {})
-    {
-      title: 'title',
-      description: 'description',
-      notify_chronic: 'tomorrow',
-      inst: Marshal.dump(NotifierMailer.notice(subject: 'NotifierMailer', content: "#{Time.current}")),
-      meth: 'deliver!',
-      args: Marshal.dump([])
-    }.merge attr
-  end
 
   def show_notices
     puts "Sent at: #{Time.current}"
