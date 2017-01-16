@@ -23,12 +23,14 @@ class TodosController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
+    @todo.build_tags(params[:todo][:tags])
     @todo.save
     respond_with(@todo)
   end
 
   def update
     @todo.update(todo_params)
+    @todo.build_tags(params[:todo][:tags])
     respond_with(@todo)
   end
 
@@ -38,11 +40,11 @@ class TodosController < ApplicationController
   end
 
   private
-    def set_todo
-      @todo = Todo.find(params[:id])
-    end
+  def set_todo
+    @todo = Todo.find(params[:id])
+  end
 
-    def todo_params
-      params.require(:todo).permit(:title, :description, :show_at, :complete_at)
-    end
+  def todo_params
+    params.require(:todo).permit(:title, :description, :show_at, :complete_at, :category_id)
+  end
 end
