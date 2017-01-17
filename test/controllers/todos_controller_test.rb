@@ -10,7 +10,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     get todos_url
     assert_response :success
 
-    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id,:title)
+    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id, :title)
     attrs.each do |k, v|
       assert_match /#{k}/, response.body
       assert_match /#{v}/, response.body
@@ -20,7 +20,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
     get new_todo_url
     assert_response :success
-    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id,:title)
+    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id, :title)
     attrs.each do |k, v|
       assert_match /#{k}/, response.body
     end
@@ -38,7 +38,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test "should show todo" do
     get todo_url(@id)
     assert_response :success
-    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id,:title, :description)
+    attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id, :title, :description)
     attrs.each do |k, v|
       assert_match /#{k}/, response.body
       assert_match /#{v}/, response.body
@@ -68,8 +68,14 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs, attrs
 
-    patch todo_url(@id), params: { todo: {title: 'new title'} }
+    patch todo_url(@id), params: { todo: { title: 'new title' } }
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs(title: 'new title'), attrs
+  end
+
+  test 'complete todo' do
+    assert_difference 'Todo.active.count', -1 do
+      patch todo_url(@id), params: { todo: { complete_at: Time.current } }
+    end
   end
 end

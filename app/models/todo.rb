@@ -65,16 +65,4 @@ class Todo < ApplicationRecord
     end
   end
 
-  def build_tags_good(tag_list)
-    tags.delete_all
-    puts Tag.count
-    tag_list.each do |name|
-      tag = Tag.find_by(name: name)
-      unless tag
-        tag = Tag.create(name: name)
-      end
-      tags << tag
-    end
-    puts Tag.count
-  end
 end

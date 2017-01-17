@@ -4,16 +4,16 @@
 
 <table>
   <thead>
-    <tr>
-      <th>Category</th>
-      <th>Title</th>
-      <th>Tags</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Category</th>
+    <th>Title</th>
+    <th>Tags</th>
+    <th colspan="3"></th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @todos.each do |todo| %>
+  <% @todos.each do |todo| %>
       <tr>
         <td><%= todo.category.try(:name) %></td>
         <td><%= todo.title %></td>
@@ -21,8 +21,13 @@
         <td><%= link_to 'Show', todo %></td>
         <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
         <td><%= link_to 'Destroy', todo, method: :delete %></td>
+        <td><%= link_to 'Complete', todo,</td>
+        <td><%= form_for(todo) do |f| %>
+              <%= f.text_field :complete_at, value: Time.now %>
+              <%= f.submit %>
+          <% end %></td>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
 
