@@ -1,10 +1,10 @@
 module Attrs
   def todo_attrs(attrs = {})
     {
-      title: "Todo created at #{Time.current}",
+      title: "title field",
       description: 'Just description',
-      show_at: Time.current,
-      complete_at: Time.current + 1.day,
+      show_at: Time.current.midnight,
+      complete_at: nil,
       #belongs_to: category,
       #has_and_belongs_to_many: tags
     }.deep_merge attrs

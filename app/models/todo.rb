@@ -42,6 +42,7 @@ class Todo < ApplicationRecord
   end
 
   def build_tags(tag_list_str)
+    return if tag_list_str.nil?
     tag_list = tag_list_str.split(',').map(&:strip).reject(&:blank?)
     tags_destroy = []
     tags.each do |tag|

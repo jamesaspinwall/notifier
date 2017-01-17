@@ -81,7 +81,17 @@ class TodoTest < ActiveSupport::TestCase
     assert_on_tags(todo,'x,y,z',7)
   end
 
-  private
+  test 'showable' do
+    Todo.create(todo_attrs)
+    assert_equal 1, Todo.showable.count
+  end
+
+   test 'active' do
+    Todo.create(todo_attrs)
+    assert_equal 1, Todo.active.count
+  end
+
+ private
 
   def assert_on_tags(todo,tag_names,tag_count)
     todo.build_tags(tag_names.clone)
