@@ -58,4 +58,4 @@ group :test do
 end
 
 gem "responders"
-gem 'browser-timezone-rails'
+gem 'validates_timeliness'

@@ -21,11 +21,7 @@
         <td><%= link_to 'Show', todo %></td>
         <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
         <td><%= link_to 'Destroy', todo, method: :delete %></td>
-        <td><%= link_to 'Complete', todo,</td>
-        <td><%= form_for(todo) do |f| %>
-              <%= f.text_field :complete_at, value: Time.now %>
-              <%= f.submit %>
-          <% end %></td>
+        <td><%= link_to 'Complete',  action: "complete", id: todo.id %></td>
       </tr>
   <% end %>
   </tbody>

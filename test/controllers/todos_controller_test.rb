@@ -73,9 +73,24 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     assert_equal todo_attrs(title: 'new title'), attrs
   end
 
-  test 'complete todo' do
+  test 'success complete todo' do
     assert_difference 'Todo.active.count', -1 do
       patch todo_url(@id), params: { todo: { complete_at: Time.current } }
+    end
+  end
+
+  test 'fails when complete_at before created_at' do
+    assert_difference 'Todo.active.count', 0 do
+      patch todo_url(@id), params: { todo: { complete_at: Time.current - 1.day } }
+      #puts response.body
+      assert_match /error prohibited this todo from being saved/, response.body
+    end
+  end
+
+  test 'another complete todo' do
+    assert_difference 'Todo.active.count', -1 do
+      get "/todos/complete/#{@id}"
+      refute_empty flash[:error]
     end
   end
 end

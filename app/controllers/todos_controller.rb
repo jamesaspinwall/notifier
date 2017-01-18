@@ -1,7 +1,7 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:show, :edit, :update, :destroy]
+  before_action :set_todo, only: [:show, :edit, :update, :destroy, :complete]
 
-  respond_to :html
+  respond_to :html, :json
 
   def index
     @todos = params[:all].present? ? Todo.all : Todo.active.showable
@@ -40,8 +40,13 @@ class TodosController < ApplicationController
   end
 
   def complete
-    @todo.update(complete: Time.current)
-    respond_with(@todo)
+    if @todo.update(complete_at: Time.current)
+      flash[:notice] = 'Todo completed'
+    else
+      flash[:error] = @todo.errors.full_messages
+    end
+    redirect_to action: 'index'
+
   end
 
   private
