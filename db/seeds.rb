@@ -18,11 +18,11 @@ end
   Tag.create(name: name)
 end
 
-#if Rails.env == 'development'
-puts "Todo.create in #{Rails.env}"
-c = Category.find_by(name: 'home')
-t = Todo.create(todo_attrs(category: c))
-puts "Category: #{t.category.attributes}"
-t.tag_ids = Tag.select(:id).all.map(&:id)
-puts t.tags.map &:attributes
-#end
+if Rails.env == 'development'
+  puts "Todo.create in #{Rails.env}"
+  c = Category.find_by(name: 'home')
+  t = Todo.create(todo_attrs(category: c))
+  puts "Category: #{t.category.attributes}"
+  t.tag_ids = Tag.select(:id).all.map(&:id)
+  puts t.tags.map &:attributes
+end

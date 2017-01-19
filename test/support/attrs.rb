@@ -4,6 +4,7 @@ module Attrs
       title: "title field",
       description: 'Just description',
       show_at: Time.current.midnight,
+      started_at: nil,
       complete_at: nil,
       #belongs_to: category,
       #has_and_belongs_to_many: tags

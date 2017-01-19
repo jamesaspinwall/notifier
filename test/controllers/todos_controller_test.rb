@@ -87,6 +87,10 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'success started_at' do
+
+  end
+
   test 'another complete todo' do
     assert_difference 'Todo.active.count', -1 do
       get "/todos/complete/#{@id}"

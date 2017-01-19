@@ -23,9 +23,20 @@ class TodosController < ApplicationController
 
   def create
     @todo = Todo.new(todo_params)
+
+    if @todo.category_id.nil?
+      @todo.category = Todo.order(:updated_at).last.category
+    end
+
     @todo.build_tags(params[:todo][:tags])
-    @todo.save
-    respond_with(@todo)
+
+    if @todo.save
+      format.html { redirect_to todos_path, notice: 'Person was successfully created.' }
+      format.json { render :show, status: :created, location: @person }
+    else
+      format.html { render :new }
+      format.json { render json: @person.errors, status: :unprocessable_entity }
+    end
   end
 
   def update
@@ -39,6 +50,15 @@ class TodosController < ApplicationController
     respond_with(@todo)
   end
 
+  def started
+    if @todo.update(started_at: Time.current)
+      flash[:notice] = 'Todo started_at set'
+    else
+      flash[:error] = @todo.errors.full_messages
+    end
+    redirect_to action: 'index'
+  end
+
   def complete
     if @todo.update(complete_at: Time.current)
       flash[:notice] = 'Todo completed'
@@ -46,7 +66,6 @@ class TodosController < ApplicationController
       flash[:error] = @todo.errors.full_messages
     end
     redirect_to action: 'index'
-
   end
 
   private
@@ -55,6 +74,6 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :show_at, :complete_at, :category_id)
+    params.require(:todo).permit(:title, :description, :show_at, :started_at, :complete_at, :category_id)
   end
 end

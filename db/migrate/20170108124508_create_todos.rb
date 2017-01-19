@@ -5,6 +5,7 @@ class CreateTodos < ActiveRecord::Migration[5.0]
       t.string :title
       t.text :description
       t.datetime :show_at
+      t.datetime :started_at
       t.datetime :complete_at
 
       t.timestamps

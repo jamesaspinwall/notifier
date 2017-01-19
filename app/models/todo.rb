@@ -1,6 +1,8 @@
 class Todo < ApplicationRecord
 
-  validates :complete_at, timeliness: { on_or_after: :created_at, allow_nil: true }
+  #validates :complete_at, timeliness: { on_or_after: :created_at, allow_nil: true }
+  validates :started_at, timeliness: { on_or_after: :created_at, allow_nil: true }
+
   belongs_to :category, optional: true
   accepts_nested_attributes_for :category
   has_and_belongs_to_many :tags #, autosave: true
@@ -10,38 +12,8 @@ class Todo < ApplicationRecord
     where(complete_at: nil)
   }
   scope :showable, -> {
-    where('show_at <= ?', Time.current)
+    where('show_at is NULL or show_at <= ?', Time.current)
   }
-
-  def build_tags_not_working(tag_list)
-    tag_by_name = {}
-    tag_names =[]
-
-    tags.each { |tag|
-      tag_by_name[tag.name] = tag
-      tag_names << tag.name
-    }
-
-    remove_list = (tag_names - tag_list)
-    add_list = (tag_list - tag_names)
-
-    remove_list.each do |name|
-      tag_by_name[name].destroy
-      puts "Destroying: #{name}"
-    end
-
-
-    add_list.each do |name|
-      tag = Tag.find_by(name: name)
-      if tag
-        puts "Adding tag #{tag.name} to ${title}"
-      else
-        tag = Tag.create(name: name)
-        puts "Creating tag #{tag.name} and adding tag to #{title}"
-      end
-      tags << tag
-    end
-  end
 
   def build_tags(tag_list_str)
     return if tag_list_str.nil?
