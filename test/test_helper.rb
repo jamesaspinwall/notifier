@@ -1,6 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require "minitest/rails/capybara"
 
 require "minitest/reporters"
 Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new, Minitest::Reporters::JUnitReporter.new]
@@ -20,9 +21,9 @@ module Minitest
   end
 end
 
-module ActionDispatch
-  class IntegrationTest
-    include Attrs
-  end
-end
-
+# module ActionDispatch
+#   class IntegrationTest
+#     include Attrs
+#   end
+# end
+#
