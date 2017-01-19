@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [:show, :edit, :update, :destroy, :complete]
+  before_action :set_todo, only: [:show, :edit, :update, :destroy, :started, :complete]
 
   respond_to :html, :json
 
@@ -76,6 +76,9 @@ class TodosController < ApplicationController
   end
 
   def set_with_time_current(field)
+    if field.nil?
+      puts 'nil'
+    end
     if @todo.update(field => Time.current)
       flash[:notice] = 'Todo started_at set'
     else
