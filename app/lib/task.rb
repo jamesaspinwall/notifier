@@ -20,7 +20,6 @@ class Task
     after_block = Proc.new do
       block.call
       Notice.scheduled.sent
-      #show_notices
       schedule_next_notice
     end
     current.timer = current.after(time_to_run - Time.current, &after_block)
@@ -56,16 +55,9 @@ class Task
     puts "Sent at: #{Time.current}"
     Notice.all.order(:id).each do |notice|
       attr = notice.attributes
-      attr.delete('inst')
-      attr.delete('meth')
-      attr.delete('args')
-      attr.delete('created_at')
-      attr.delete('updated_at')
-      attr.delete('title')
-      attr.delete('description')
-      attr.delete('repeat')
-      attr.delete('id')
-      attr.delete('cancelled')
+      %w(id inst meth args created_at updated_at title description repeat cancelled).each do |name|
+        attr.delete(name)
+      end
       puts attr
     end
     puts '-'*120
