@@ -11,6 +11,9 @@ class Todo < ApplicationRecord
   scope :active, -> {
     where(complete_at: nil)
   }
+  scope :completed, -> {
+    where.not(complete_at: nil)
+  }
   scope :showable, -> {
     where('show_at is NULL or show_at <= ?', Time.current)
   }

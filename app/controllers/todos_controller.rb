@@ -4,7 +4,13 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-    @todos = params[:all].present? ? Todo.all : Todo.active.showable
+    @todos = if params[:all].present?
+               Todo.all
+             elsif params[:completed].present?
+               Todo.completed
+             else
+               Todo.active.showable
+             end
     respond_with(@todos)
   end
 
@@ -30,12 +36,15 @@ class TodosController < ApplicationController
 
     @todo.build_tags(params[:todo][:tags])
 
-    if @todo.save
-      format.html { redirect_to todos_path, notice: 'Person was successfully created.' }
-      format.json { render :show, status: :created, location: @person }
-    else
-      format.html { render :new }
-      format.json { render json: @person.errors, status: :unprocessable_entity }
+    respond_to do |format|
+
+      if @todo.save
+        format.html { redirect_to todos_path, notice: 'Person was successfully created.' }
+        format.json { render :show, status: :created, location: @person }
+      else
+        format.html { render :new }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
+      end
     end
   end
 
