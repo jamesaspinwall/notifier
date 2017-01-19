@@ -15,7 +15,6 @@ class TodosController < ApplicationController
   end
 
   def show
-    category = Category.all
     respond_with(@todo)
   end
 
@@ -60,21 +59,11 @@ class TodosController < ApplicationController
   end
 
   def started
-    if @todo.update(started_at: Time.current)
-      flash[:notice] = 'Todo started_at set'
-    else
-      flash[:error] = @todo.errors.full_messages
-    end
-    redirect_to action: 'index'
+    set_with_time_current(:started_at)
   end
 
   def complete
-    if @todo.update(complete_at: Time.current)
-      flash[:notice] = 'Todo completed'
-    else
-      flash[:error] = @todo.errors.full_messages
-    end
-    redirect_to action: 'index'
+    set_with_time_current(:complete_at)
   end
 
   private
@@ -84,5 +73,15 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title, :description, :show_at, :started_at, :complete_at, :category_id)
+  end
+
+  def set_with_time_current(field)
+    if @todo.update(field => Time.current)
+      flash[:notice] = 'Todo started_at set'
+    else
+      flash[:error] = @todo.errors.full_messages
+    end
+    redirect_to action: 'index'
+
   end
 end
