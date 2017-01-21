@@ -3,7 +3,8 @@ module Attrs
     {
       title: "title field",
       description: 'Just description',
-      show_at: Time.current.midnight,
+      show_at: nil,
+      show_at_chronic: 'now',
       started_at: nil,
       complete_at: nil,
       #belongs_to: category,

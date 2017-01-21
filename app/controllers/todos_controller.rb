@@ -33,6 +33,13 @@ class TodosController < ApplicationController
       @todo.category = Todo.order(:updated_at).last.category
     end
 
+    if start_at_chronic.present?
+      @todo.start_at = Chronic.parse(@todo.start_at_chronic)
+      if @todo.start_at.nil?
+        raise ChronicError.new(@todo.start_at_chronic)
+      end
+    end
+
     @todo.build_tags(params[:todo][:tags])
 
     respond_to do |format|
@@ -45,6 +52,9 @@ class TodosController < ApplicationController
         format.json { render json: @person.errors, status: :unprocessable_entity }
       end
     end
+  rescue ChronicError => e
+    format.html { render :new }
+    format.json { render json: e, status: :unprocessable_entity }
   end
 
   def update
@@ -72,7 +82,7 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :show_at, :started_at, :complete_at, :category_id)
+    params.require(:todo).permit(:title, :description, :show_at, :show_at_chronic, :started_at, :complete_at, :category_id)
   end
 
   def set_with_time_current(field)
