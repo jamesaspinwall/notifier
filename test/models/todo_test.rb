@@ -70,15 +70,15 @@ class TodoTest < ActiveSupport::TestCase
     todo = Todo.create(todo_attrs)
     assert_empty todo.tags
 
-    assert_on_tags(todo,'a',1)
-    assert_on_tags(todo,'a, b',2)
-    assert_on_tags(todo,'a, b,c',3)
-    assert_on_tags(todo,'a, c',3)
-    assert_on_tags(todo,'d, a',4)
-    assert_on_tags(todo,'a,d,c',4)
-    assert_on_tags(todo,'a, c, , b, d',4)
-    assert_on_tags(todo,'c', 4)
-    assert_on_tags(todo,'x,y,z',7)
+    assert_on_tags(todo, 'a', 1)
+    assert_on_tags(todo, 'a, b', 2)
+    assert_on_tags(todo, 'a, b,c', 3)
+    assert_on_tags(todo, 'a, c', 3)
+    assert_on_tags(todo, 'd, a', 4)
+    assert_on_tags(todo, 'a,d,c', 4)
+    assert_on_tags(todo, 'a, c, , b, d', 4)
+    assert_on_tags(todo, 'c', 4)
+    assert_on_tags(todo, 'x,y,z', 7)
   end
 
   test 'showable' do
@@ -86,14 +86,32 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal 1, Todo.showable.count
   end
 
-   test 'active' do
+  test 'active' do
     Todo.create(todo_attrs)
     assert_equal 1, Todo.active.count
   end
 
- private
+  test 'query by category string delimited by comma' do
+    %w(a b c d e f g h i j).each do |name|
+      Category.create(name: name)
+    end
+    [
+      %W(A a),
+      %w(B a,b)
+    ].each do |name, categories|
 
-  def assert_on_tags(todo,tag_names,tag_count)
+      cat_ids = categories.split(',').strip.map do |name|
+        Category.find_by(name: category)
+      end.id
+
+      Todo.create(name: name, categories_attributes: [{id: cat_ids}])
+    end
+    
+  end
+
+  private
+
+  def assert_on_tags(todo, tag_names, tag_count)
     todo.build_tags(tag_names.clone)
     tag_names = tag_names.split(',').map(&:strip).reject(&:blank?)
     assert_equal tag_names.count, todo.tags.count
