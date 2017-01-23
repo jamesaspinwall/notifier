@@ -91,22 +91,98 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal 1, Todo.active.count
   end
 
-  test 'query by category string delimited by comma' do
+  test 'create with tag string delimited by comma' do
     %w(a b c d e f g h i j).each do |name|
-      Category.create(name: name)
+      Tag.create(name: name)
     end
-    [
+
+    data = [
       %W(A a),
-      %w(B a,b)
-    ].each do |name, categories|
+      %w(B b),
+      %w(C b,c,e),
+      %w(D b,c,d,e)
+    ]
 
-      cat_ids = categories.split(',').strip.map do |name|
-        Category.find_by(name: category)
-      end.id
+    assert_difference 'Todo.count', 4 do
+      data.each do |title, tag_names_str|
+        tags = Tag.by_names(tag_names_str)
+        Todo.create(title: title, tags: tags)
+      end
 
-      Todo.create(name: name, categories_attributes: [{id: cat_ids}])
+      data.each do |title, tag_names_str|
+        todo_tags = Todo.find_by(title: title).tags.map(&:name).sort
+        tag_names_array = tag_names_str.split(',').map(&:strip).sort
+        assert_equal tag_names_array, todo_tags
+      end
+
+      todos_2 = Todo.and_tags_by_names('a')
+      assert_equal ["A"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.and_tags_by_names('b')
+      assert_equal ["B", "C", "D"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.and_tags_by_names('b,c')
+      assert_equal ["C", "D"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.and_tags_by_names('a,c')
+      assert_equal [], todos_2.map(&:title).sort
+
+      todos_2 = Todo.and_tags_by_names('b,d')
+      assert_equal ["D"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.and_tags_by_names('z')
+      assert_equal [], todos_2.map(&:title).sort
+
     end
-    
+
+    assert_difference 'Todo.count', 4 do
+      %w(a b c d e f g h i j).each do |name|
+        Category.create(name: name)
+      end
+
+      data = [
+        %W(A a),
+        %w(B b),
+        %w(C b),
+        %w(D a),
+        %w(E c),
+        %w(F a),
+
+      ]
+
+      Todo.destroy_all
+      assert_difference 'Todo.count', 6 do
+        data.each do |title, category_name|
+          category = Category.find_by(name: category_name)
+          assert Todo.create(title: title, category: category)
+        end
+      end
+
+      data.each do |title, category_name|
+        name = Todo.find_by(title: title).category.name
+        assert_equal name, category_name
+      end
+
+      todos_2 = Todo.or_categories_by_names('a')
+      assert_equal ["A", "D", "F"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.or_categories_by_names('b')
+      assert_equal ["B", "C"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.or_categories_by_names('a,b')
+      assert_equal ["A", "B", "C", "D", "F"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.or_categories_by_names('a,c')
+      assert_equal ["A", "D", "E", "F"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.or_categories_by_names('b,d')
+      assert_equal ["B", "C"], todos_2.map(&:title).sort
+
+      todos_2 = Todo.or_categories_by_names('z')
+      assert_equal [], todos_2.map(&:title).sort
+
+    end
+
   end
 
   private
@@ -118,4 +194,5 @@ class TodoTest < ActiveSupport::TestCase
     assert_equal tag_names.sort, todo.tags.map(&:name).sort
     assert_equal tag_count, Tag.count
   end
+
 end
