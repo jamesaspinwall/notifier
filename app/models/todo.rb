@@ -40,7 +40,6 @@ class Todo < ApplicationRecord
     where(completed_at: from_at..to_at)
   }
 
-  scope
 
   def build_tags(tag_list_str)
     return if tag_list_str.nil?
