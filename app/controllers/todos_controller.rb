@@ -4,14 +4,26 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-    @todos = if params[:all].present?
-               Todo.all
-             elsif params[:completed].present?
-               Todo.completed
-             else
-               Todo.active.showable
-             end
+    chain = []
+    chain << [:show_at, params[:show_at]] if params[:show_at].present?
+    chain << [:completed, params[:completed]] if params[:completed].present?
+    chain << [:or_categories_by_names, params[:categories]] if params[:categories].present?
+    chain << [:and_tags, params[:tags]] if params[:tags].present?
+    chain.map do |scope, params|
+      @todos = Todo.send(scope, params)
+    end
+
+    # @todos = if params[:all].present?
+    #            Todo.all
+    #          elsif params[:completed].present?
+    #            Todo.completed
+    #          else
+    #            Todo.active.showable
+    #          end
     respond_with(@todos)
+  rescue =>e
+    @todos = Todo.all
+    flash.now[:error] = "#{e.message}"
   end
 
   def show

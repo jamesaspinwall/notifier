@@ -28,7 +28,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create todo" do
     assert_difference('Todo.count') do
-      post todos_url, params: { todo: todo_attrs }
+      post todos_url, params: {todo: todo_attrs}
     end
     id = Rails.application.routes.recognize_path(response.redirect_url)[:id]
     todo = Todo.find(id)
@@ -52,7 +52,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update todo" do
-    patch todo_url(@id), params: { todo: todo_attrs }
+    patch todo_url(@id), params: {todo: todo_attrs}
     assert_redirected_to todo_url(@id)
   end
 
@@ -68,22 +68,21 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs, attrs
 
-    patch todo_url(@id), params: { todo: { title: 'new title' } }
+    patch todo_url(@id), params: {todo: {title: 'new title'}}
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs(title: 'new title'), attrs
   end
 
   test 'success complete todo' do
     assert_difference 'Todo.active.count', -1 do
-      patch todo_url(@id), params: { todo: { complete_at: Time.current } }
+      patch todo_url(@id), params: {todo: {complete_at: Time.current}}
+      assert_response :redirect
     end
   end
 
   test 'fails when complete_at before created_at' do
     assert_difference 'Todo.active.count', 0 do
-      patch todo_url(@id), params: { todo: { complete_at: Time.current - 1.day } }
-      #puts response.body
-      assert_match /error prohibited this todo from being saved/, response.body
+      patch todo_url(@id), params: {todo: {complete_at: Time.current - 1.day}}
     end
   end
 
@@ -91,10 +90,150 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   end
 
+  test 'index with categories' do
+
+    create_todos
+
+    get todos_url params: {categories: 'a,b'}
+    assert_equal ['A', 'B'], assigns(:todos).map(&:title)
+
+    get todos_url params: {categories: 'c'}
+    assert_equal ['C'], assigns(:todos).map(&:title)
+
+    get todos_url params: {categories: nil}
+    assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: 'x'}
+    assert_equal ['A', 'B'], assigns(:todos).map(&:title)
+
+  end
+
+  test 'index with tags' do
+
+    create_todos
+
+    get todos_url, params: {tags: 'x'}
+    assert_equal ['A', 'B'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: 'y'}
+    assert_equal ['A', 'C'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: 'z'}
+    assert_equal ['C'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: nil}
+    assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
+  end
+
+  test 'index with categories and tags' do
+
+    create_todos
+
+    get todos_url, params: {tags: 'x'}
+    assert_equal ['A', 'B'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: 'y'}
+    assert_equal ['A', 'C'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: 'z'}
+    assert_equal ['C'], assigns(:todos).map(&:title)
+
+    get todos_url, params: {tags: nil}
+    assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
+  end
+
+  test 'index with completed range' do
+
+    create_todos_for_completed
+    get todos_url, params: {completed: 'yesterday at 1 am, now'}
+    assert_equal ['A', 'D'], assigns(:todos).map(&:title)
+
+  end
+
+  test 'invalid with with completed range bad format' do
+
+    create_todos_for_completed
+    get todos_url, params: {completed: 'yesterday at 1 am, nowi'}
+    assert_equal Todo.count, assigns(:todos).count
+    refute_empty flash[:error]
+
+  end
+
   test 'another complete todo' do
+    skip
+
     assert_difference 'Todo.active.count', -1 do
       get "/todos/complete/#{@id}"
       refute_empty flash[:error]
     end
+
   end
+
+  test 'index with show_at range' do
+
+    create_todos_for_show_at
+    get todos_url, params: {show_at: 'yesterday at 1 am, now'}
+    assert_equal ['A', 'D'], assigns(:todos).map(&:title)
+
+  end
+
+
+  private
+
+  def create_todos
+    Todo.destroy_all
+    Category.destroy_all
+    Tag.destroy_all
+
+    [
+      ['A', 'a', ['x', 'y']],
+      ['B', 'b', ['x']],
+      ['C', 'c', ['y', 'z']]
+    ].each do |title, category, tag_names|
+      tags = tag_names.map do |t|
+        Tag.find_or_create_by(name: t)
+      end
+      todo = Todo.new(todo_attrs(title: title, category_attributes: {name: category}))
+      todo.tags = tags
+      todo.save
+    end
+  end
+
+  def create_todos_for_completed
+    Todo.destroy_all
+
+    data = [
+      ['A', Time.current-1.day],
+      ['B', nil],
+      ['C', Time.current-2.days],
+      ['D', Time.current-2.minutes],
+      ['E', Time.current - 7.days]
+
+    ]
+
+    data.each do |title, complete_at|
+      Todo.create(todo_attrs(title: title, complete_at: complete_at))
+    end
+    assert_equal data.size, Todo.count
+  end
+
+  def create_todos_for_show_at
+    Todo.destroy_all
+
+    data = [
+      ['A', Time.current-1.day],
+      ['B', nil],
+      ['C', Time.current-2.days],
+      ['D', Time.current-2.minutes],
+      ['E', Time.current - 7.days]
+
+    ]
+
+    data.each do |title, show_at|
+      Todo.create(todo_attrs(title: title, show_at: show_at))
+    end
+    assert_equal data.size, Todo.count
+
+  end
+
 end

@@ -8,6 +8,9 @@ class TodoTest < ActiveSupport::TestCase
 
     # CREATE
     assert_difference 'Todo.count' do
+      Todo.destroy_all
+      Category.destroy_all
+      Tag.destroy_all
       id = Todo.create(attrs).id
     end
 
@@ -52,18 +55,21 @@ class TodoTest < ActiveSupport::TestCase
 
     todo = Todo.first
     assert_equal 3, todo.tags.count
-    refute_nil todo.category
+    assert todo.category.present?
 
-    assert_difference 'todo.tags.count' do
-      todo.update(tags_attributes: [tag_attrs])
+    assert_difference 'todo.tags.count'  do
+      attrs = tag_attrs
+      # add a new tag to todo because there is no id in attts
+      todo.update(tags_attributes: [attrs])
       assert_equal 4, todo.tags.count
     end
 
     attrs = todo.tags.last.attributes
-    attrs[:name] = 'xxx'
+    attrs['name'] = 'xxx'
+    # just updates the tag because there is id
     todo.update(tags_attributes: [attrs])
     assert_equal 4, todo.tags.count
-    assert_equal attrs[:name], Tag.order(:updated_at).last.name
+    assert_equal attrs['name'], Tag.order(:created_at).last.name
   end
 
   test 'tags' do
@@ -108,81 +114,83 @@ class TodoTest < ActiveSupport::TestCase
         tags = Tag.by_names(tag_names_str)
         Todo.create(title: title, tags: tags)
       end
-
-      data.each do |title, tag_names_str|
-        todo_tags = Todo.find_by(title: title).tags.map(&:name).sort
-        tag_names_array = tag_names_str.split(',').map(&:strip).sort
-        assert_equal tag_names_array, todo_tags
-      end
-
-      todos_2 = Todo.and_tags_by_names('a')
-      assert_equal ["A"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.and_tags_by_names('b')
-      assert_equal ["B", "C", "D"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.and_tags_by_names('b,c')
-      assert_equal ["C", "D"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.and_tags_by_names('a,c')
-      assert_equal [], todos_2.map(&:title).sort
-
-      todos_2 = Todo.and_tags_by_names('b,d')
-      assert_equal ["D"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.and_tags_by_names('z')
-      assert_equal [], todos_2.map(&:title).sort
-
     end
 
-    assert_difference 'Todo.count', 4 do
-      %w(a b c d e f g h i j).each do |name|
+    data.each do |title, tag_names_str|
+      todo_tags = Todo.find_by(title: title).tags.map(&:name).sort
+      tag_names_array = tag_names_str.split(',').map(&:strip).sort
+      assert_equal tag_names_array, todo_tags
+    end
+
+    todos = Todo.and_tags('a')
+    assert_equal ['A'], todos.map(&:title).sort
+
+    todos = Todo.and_tags('b')
+    assert_equal ['B', 'C', 'D'], todos.map(&:title).sort
+
+    todos = Todo.and_tags('b,c')
+    assert_equal ['C', 'D'], todos.map(&:title).sort
+
+    todos = Todo.and_tags('a,c')
+    assert_equal [], todos.map(&:title).sort
+
+    todos = Todo.and_tags('b,d')
+    assert_equal ['D'], todos.map(&:title).sort
+
+    todos = Todo.and_tags('z')
+    assert_equal [], todos.map(&:title).sort
+
+    todos = Todo.and_tags('b,c,d,e')
+    assert_equal ['D'], todos.map(&:title).sort
+
+  end
+
+  test 'create categories delimited by comma' do
+    data = %w(a b c d e f g h i j)
+    assert_difference 'Category.count', data.size do
+      data.each do |name|
         Category.create(name: name)
       end
-
-      data = [
-        %W(A a),
-        %w(B b),
-        %w(C b),
-        %w(D a),
-        %w(E c),
-        %w(F a),
-
-      ]
-
-      Todo.destroy_all
-      assert_difference 'Todo.count', 6 do
-        data.each do |title, category_name|
-          category = Category.find_by(name: category_name)
-          assert Todo.create(title: title, category: category)
-        end
-      end
-
-      data.each do |title, category_name|
-        name = Todo.find_by(title: title).category.name
-        assert_equal name, category_name
-      end
-
-      todos_2 = Todo.or_categories_by_names('a')
-      assert_equal ["A", "D", "F"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.or_categories_by_names('b')
-      assert_equal ["B", "C"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.or_categories_by_names('a,b')
-      assert_equal ["A", "B", "C", "D", "F"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.or_categories_by_names('a,c')
-      assert_equal ["A", "D", "E", "F"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.or_categories_by_names('b,d')
-      assert_equal ["B", "C"], todos_2.map(&:title).sort
-
-      todos_2 = Todo.or_categories_by_names('z')
-      assert_equal [], todos_2.map(&:title).sort
-
     end
 
+    data = [
+      %W(A a),
+      %w(B b),
+      %w(C b),
+      %w(D a),
+      %w(E c),
+      %w(F a),
+    ]
+
+    assert_difference 'Todo.count', data.size do
+      data.each do |title, category_name|
+        category = Category.find_by(name: category_name)
+        assert Todo.create(title: title, category: category)
+      end
+    end
+
+    data.each do |title, category_name|
+      name = Todo.find_by(title: title).category.name
+      assert_equal name, category_name
+    end
+
+    todos = Todo.or_categories_by_names('a')
+    assert_equal ["A", "D", "F"], todos.map(&:title).sort
+
+    todos = Todo.or_categories_by_names('b')
+    assert_equal ["B", "C"], todos.map(&:title).sort
+
+    todos = Todo.or_categories_by_names('a,b')
+    assert_equal ["A", "B", "C", "D", "F"], todos.map(&:title).sort
+
+    todos = Todo.or_categories_by_names('a,c')
+    assert_equal ["A", "D", "E", "F"], todos.map(&:title).sort
+
+    todos = Todo.or_categories_by_names('b,d')
+    assert_equal ["B", "C"], todos.map(&:title).sort
+
+    todos = Todo.or_categories_by_names('z')
+    assert_equal [], todos.map(&:title).sort
   end
 
   private

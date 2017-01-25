@@ -37,7 +37,7 @@ gem 'celluloid', require: 'celluloid/current'
 gem 'chronic'
 gem "responders"
 gem 'validates_timeliness'
-
+gem 'rails-controller-testing'
 
 
 group :development do

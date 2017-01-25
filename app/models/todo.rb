@@ -16,7 +16,7 @@ class Todo < ApplicationRecord
     where('show_at is NULL or show_at <= ?', Time.current)
   }
 
-  scope :and_tags_by_names, -> (str) {
+  scope :and_tags_by_names_old, -> (str) {
     if str.blank?
       all
     else
@@ -24,6 +24,15 @@ class Todo < ApplicationRecord
         joins(:tags).where(tags: {name: name})
       end
       arrays_of_todos_array.reduce(&:&)
+    end
+  }
+
+  scope :and_tags , -> (str) {
+    if str.blank?
+      all
+    else
+      args = str.split(',').map(&:strip)
+      joins(innery(args.size)).where(whery(args.size), *args)
     end
   }
 
@@ -36,10 +45,22 @@ class Todo < ApplicationRecord
     end
   }
 
-  scope :completed, ->(from_at = Time.current.midnight, to_at = Time.current){
-    where(completed_at: from_at..to_at)
+  scope :completed, ->(time_range) {
+    where(complete_at: parse_time_range(time_range))
   }
 
+  scope :show_at, ->(time_range) {
+    where(show_at: parse_time_range(time_range))
+  }
+
+  def self.parse_time_range(time_range)
+    Chronic.time_class = Time.zone
+    from_str, to_str = time_range.split(',')
+    from_at = Chronic.parse(from_str)
+    to_at = Chronic.parse(to_str)
+    raise 'date parse error' if from_at.nil? or to_at.nil?
+    from_at..to_at
+  end
 
   def build_tags(tag_list_str)
     return if tag_list_str.nil?
@@ -64,5 +85,13 @@ class Todo < ApplicationRecord
       tags << tag
     end
   end
+
+  def self.innery(i)
+    (1..i).map{|n| "INNER JOIN tags_todos td#{n} ON td#{n}.todo_id=todos.id INNER JOIN tags t#{n} ON t#{n}.id=td#{n}.tag_id"}.join(' ')
+  end
+  def self.whery(i)
+    (1..i).map{|n| "t#{n}.name = ?"}.join(' AND ')
+  end
+
 
 end

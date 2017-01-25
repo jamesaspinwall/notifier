@@ -20,7 +20,7 @@ module Attrs
 
   def tag_attrs(attrs = {})
     {
-      name: "tag name at #{Time.current}"
+      name: "tag name at #{Time.current.to_f}"
     }.deep_merge attrs
   end
 
