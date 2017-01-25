@@ -108,16 +108,16 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
     create_todos
 
-    get todos_url, params: {tags: 'x'}
+    get todos_url, params: {and_tags: 'x'}
     assert_equal ['A', 'B'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: 'y'}
+    get todos_url, params: {and_tags: 'y'}
     assert_equal ['A', 'C'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: 'z'}
+    get todos_url, params: {and_tags: 'z'}
     assert_equal ['C'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: nil}
+    get todos_url, params: {and_tags: nil}
     assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
   end
 
@@ -125,16 +125,16 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
     create_todos
 
-    get todos_url, params: {tags: 'x'}
+    get todos_url, params: {and_tags: 'x'}
     assert_equal ['A', 'B'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: 'y'}
+    get todos_url, params: {and_tags: 'y'}
     assert_equal ['A', 'C'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: 'z'}
+    get todos_url, params: {and_tags: 'z'}
     assert_equal ['C'], assigns(:todos).map(&:title)
 
-    get todos_url, params: {tags: nil}
+    get todos_url, params: {and_tags: nil}
     assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
   end
 

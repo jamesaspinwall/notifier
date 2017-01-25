@@ -8,7 +8,7 @@ class TodosController < ApplicationController
     chain << [:show_at, params[:show_at]] unless params[:show_at].nil?
     chain << [:complete_at, params[:complete_at]] unless params[:complete_at].nil?
     chain << [:or_categories, params[:or_categories]] unless params[:or_categories].nil?
-    chain << [:and_tags, params[:tags]] unless params[:tags].nil?
+    chain << [:and_tags, params[:and_tags]] unless params[:and_tags].nil?
     chain << [:for_user, params[:for_user]] unless params[:for_user].nil?
     chain.map do |scope, params|
       @todos = Todo.send(scope, params)
