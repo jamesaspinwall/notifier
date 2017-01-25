@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PeopleControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @person = people(:one)
+    @person = Person.create person_attrs
   end
 
   test "should get index" do
@@ -17,7 +17,7 @@ class PeopleControllerTest < ActionDispatch::IntegrationTest
 
   test "should create person" do
     assert_difference('Person.count') do
-      post people_url, params: { person: { email: @person.email, phone: @person.phone } }
+      post people_url, params: { person: person_attrs }
     end
 
     assert_redirected_to person_url(Person.last)

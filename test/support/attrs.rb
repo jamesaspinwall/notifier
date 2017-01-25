@@ -3,12 +3,9 @@ module Attrs
     {
       title: "title field",
       description: 'Just description',
-      show_at: nil,
       show_at_chronic: 'now',
       started_at: nil,
       complete_at: nil,
-      #belongs_to: category,
-      #has_and_belongs_to_many: tags
     }.deep_merge attrs
   end
 
@@ -32,7 +29,6 @@ module Attrs
     }.merge attrs
   end
 
-
   def notice_attrs(attr = {})
     {
       title: 'title',
@@ -55,5 +51,18 @@ module Attrs
     }.merge attr
   end
 
+  def person_attrs(attrs = {})
+    {
+      name: "John (#{Time.current.to_f})",
+      phone: '888-888-1111',
+      email: "john_#{Time.current.to_f}@work.com"
+    }
+  end
+
+  def company_attrs(attrs = {})
+    {
+      name: "IBM (#{Time.current.to_f})"
+    }
+  end
 end
 

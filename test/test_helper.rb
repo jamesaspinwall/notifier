@@ -17,7 +17,6 @@ Dir[Rails.root.join("test/support/**/*.rb")].each { |f| require f }
 module Minitest
   class Test
     include Attrs
-    #include Attrs::Person
   end
 end
 

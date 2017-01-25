@@ -39,7 +39,7 @@ class NoticeTest < ActiveSupport::TestCase
   end
 
   test 'schedule next notice' do
-    #skip
+    skip
     Notice.destroy_all
     n5 = Notice.create notice_attrs(notify_chronic: 'in 3 secs')
     Task.schedule_next_notice
@@ -55,6 +55,7 @@ class NoticeTest < ActiveSupport::TestCase
   end
 
   test 'update INVALID sent_at validator' do
+    skip
     notice = Notice.create notice_attrs(notify_chronic: 'in 3 secs')
     notice.update(sent_at: 'xxx')
     refute_empty notice.errors.messages[:sent_at]

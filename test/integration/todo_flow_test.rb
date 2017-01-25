@@ -4,9 +4,8 @@ class TodoFlowTest < Capybara::Rails::TestCase
 
   test 'ISNECUD' do
     Todo.create(todo_attrs)
-    visit todos_path
+    visit todos_path(for_user: '')
     assert page.has_content? 'title field'
-    assert page.has_content? 'Just description'
     assert true
   end
 end

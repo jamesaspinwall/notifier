@@ -1,17 +1,16 @@
 class Todo < ApplicationRecord
 
   #validates :complete_at, timeliness: { on_or_after: :created_at, allow_nil: true }
-  validates :started_at, timeliness: {on_or_after: :created_at, allow_nil: true}
+  validates :started_at, timeliness: { on_or_after: :created_at, allow_nil: true }
 
   belongs_to :category, optional: true
   accepts_nested_attributes_for :category
   has_and_belongs_to_many :tags #, autosave: true
   accepts_nested_attributes_for :tags
 
-  scope :active, -> {
-    where(complete_at: nil)
+  scope :for_user, -> (id_str) {
+    id_str.present? ? where(user_id: id_str.to_i) : all
   }
-
   scope :showable, -> {
     where('show_at is NULL or show_at <= ?', Time.current)
   }
@@ -21,13 +20,13 @@ class Todo < ApplicationRecord
       all
     else
       arrays_of_todos_array = str.split(',').map(&:strip).map do |name|
-        joins(:tags).where(tags: {name: name})
+        joins(:tags).where(tags: { name: name })
       end
       arrays_of_todos_array.reduce(&:&)
     end
   }
 
-  scope :and_tags , -> (str) {
+  scope :and_tags, -> (str) {
     if str.blank?
       all
     else
@@ -41,12 +40,16 @@ class Todo < ApplicationRecord
       all
     else
       names = str.split(',').map(&:strip)
-      joins(:category).where(categories: {name: names})
+      joins(:category).where(categories: { name: names })
     end
   }
 
-  scope :completed, ->(time_range) {
-    where(complete_at: parse_time_range(time_range))
+  scope :complete_at, ->(time_range) {
+    if time_range.present?
+      where(complete_at: parse_time_range(time_range))
+    else
+      where(complete_at: nil)
+    end
   }
 
   scope :show_at, ->(time_range) {
@@ -87,10 +90,11 @@ class Todo < ApplicationRecord
   end
 
   def self.innery(i)
-    (1..i).map{|n| "INNER JOIN tags_todos td#{n} ON td#{n}.todo_id=todos.id INNER JOIN tags t#{n} ON t#{n}.id=td#{n}.tag_id"}.join(' ')
+    (1..i).map { |n| "INNER JOIN tags_todos td#{n} ON td#{n}.todo_id=todos.id INNER JOIN tags t#{n} ON t#{n}.id=td#{n}.tag_id" }.join(' ')
   end
+
   def self.whery(i)
-    (1..i).map{|n| "t#{n}.name = ?"}.join(' AND ')
+    (1..i).map { |n| "t#{n}.name = ?" }.join(' AND ')
   end
 
 

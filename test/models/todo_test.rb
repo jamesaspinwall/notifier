@@ -94,7 +94,7 @@ class TodoTest < ActiveSupport::TestCase
 
   test 'active' do
     Todo.create(todo_attrs)
-    assert_equal 1, Todo.active.count
+    assert_equal 1, Todo.complete_at(nil).count
   end
 
   test 'create with tag string delimited by comma' do

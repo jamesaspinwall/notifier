@@ -5,21 +5,15 @@ class TodosController < ApplicationController
 
   def index
     chain = []
-    chain << [:show_at, params[:show_at]] if params[:show_at].present?
-    chain << [:completed, params[:completed]] if params[:completed].present?
-    chain << [:or_categories, params[:or_categories]] if params[:or_categories].present?
-    chain << [:and_tags, params[:tags]] if params[:tags].present?
+    chain << [:show_at, params[:show_at]] unless params[:show_at].nil?
+    chain << [:complete_at, params[:complete_at]] unless params[:complete_at].nil?
+    chain << [:or_categories, params[:or_categories]] unless params[:or_categories].nil?
+    chain << [:and_tags, params[:tags]] unless params[:tags].nil?
+    chain << [:for_user, params[:for_user]] unless params[:for_user].nil?
     chain.map do |scope, params|
       @todos = Todo.send(scope, params)
     end
 
-    # @todos = if params[:all].present?
-    #            Todo.all
-    #          elsif params[:completed].present?
-    #            Todo.completed
-    #          else
-    #            Todo.active.showable
-    #          end
     respond_with(@todos)
   rescue =>e
     @todos = Todo.all

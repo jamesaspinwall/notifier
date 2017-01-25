@@ -2,6 +2,10 @@ require 'test_helper'
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
 
+  def setup
+    @tag = Tag.create tag_attrs
+  end
+
   test "should get index" do
     get tags_url
     assert_response :success

@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20170118163250) do
   end
 
   create_table "people", force: :cascade do |t|
+    t.string   "name"
     t.string   "phone"
     t.string   "email"
     t.datetime "created_at", null: false
