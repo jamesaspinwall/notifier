@@ -75,14 +75,14 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'success complete todo' do
-    assert_difference 'Todo.active.count', -1 do
+    assert_difference 'Todo.complete_at(nil).count', -1 do
       patch todo_url(@id), params: {todo: {complete_at: Time.current}}
       assert_response :redirect
     end
   end
 
   test 'fails when complete_at before created_at' do
-    assert_difference 'Todo.active.count', -1 do
+    assert_difference 'Todo.complete_at(nil).count', -1 do
       complete_at = Time.current
       patch todo_url(@id), params: {todo: {complete_at: complete_at}}
       assert_equal complete_at.to_i, assigns(:todo).complete_at.to_i
@@ -141,7 +141,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test 'index with completed range' do
 
     create_todos_for_completed
-    get todos_url, params: {completed: 'yesterday at 1 am, now'}
+    get todos_url, params: {complete_at: 'yesterday at 1 am, now'}
     assert_equal ['A', 'D'], assigns(:todos).map(&:title)
 
   end
