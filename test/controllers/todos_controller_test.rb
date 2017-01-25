@@ -30,9 +30,9 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Todo.count') do
       post todos_url, params: {todo: todo_attrs}
     end
-    id = Rails.application.routes.recognize_path(response.redirect_url)[:id]
-    todo = Todo.find(id)
-    assert_redirected_to todo_url(todo)
+    #id = Rails.application.routes.recognize_path(response.redirect_url)[:id]
+    #todo = Todo.find(id)
+    assert_redirected_to todos_url
   end
 
   test "should show todo" do
@@ -52,8 +52,10 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update todo" do
-    patch todo_url(@id), params: {todo: todo_attrs}
+    attrs = todo_attrs
+    patch todo_url(@id), params: {todo: attrs}
     assert_redirected_to todo_url(@id)
+    assert_equal attrs[:title], Todo.find(@id).title
   end
 
   test "should destroy todo" do
@@ -64,7 +66,6 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update only title' do
-    @id = Todo.create(todo_attrs).id
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs, attrs
 
@@ -81,30 +82,25 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'fails when complete_at before created_at' do
-    assert_difference 'Todo.active.count', 0 do
-      patch todo_url(@id), params: {todo: {complete_at: Time.current - 1.day}}
+    assert_difference 'Todo.active.count', -1 do
+      complete_at = Time.current
+      patch todo_url(@id), params: {todo: {complete_at: complete_at}}
+      assert_equal complete_at.to_i, assigns(:todo).complete_at.to_i
     end
-  end
-
-  test 'success started_at' do
-
   end
 
   test 'index with categories' do
 
     create_todos
 
-    get todos_url params: {categories: 'a,b'}
+    get todos_url params: {or_categories: 'a,b'}
     assert_equal ['A', 'B'], assigns(:todos).map(&:title)
 
-    get todos_url params: {categories: 'c'}
+    get todos_url params: {or_categories: 'c'}
     assert_equal ['C'], assigns(:todos).map(&:title)
 
-    get todos_url params: {categories: nil}
+    get todos_url params: {or_categories: nil}
     assert_equal ['A', 'B', 'C'], assigns(:todos).map(&:title)
-
-    get todos_url, params: {tags: 'x'}
-    assert_equal ['A', 'B'], assigns(:todos).map(&:title)
 
   end
 

@@ -36,7 +36,7 @@ class Todo < ApplicationRecord
     end
   }
 
-  scope :or_categories_by_names, -> (str) {
+  scope :or_categories, -> (str) {
     if str.blank?
       all
     else

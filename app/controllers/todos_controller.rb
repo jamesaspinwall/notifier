@@ -7,7 +7,7 @@ class TodosController < ApplicationController
     chain = []
     chain << [:show_at, params[:show_at]] if params[:show_at].present?
     chain << [:completed, params[:completed]] if params[:completed].present?
-    chain << [:or_categories_by_names, params[:categories]] if params[:categories].present?
+    chain << [:or_categories, params[:or_categories]] if params[:or_categories].present?
     chain << [:and_tags, params[:tags]] if params[:tags].present?
     chain.map do |scope, params|
       @todos = Todo.send(scope, params)
@@ -45,10 +45,10 @@ class TodosController < ApplicationController
       @todo.category = Todo.order(:updated_at).last.category
     end
 
-    if start_at_chronic.present?
-      @todo.start_at = Chronic.parse(@todo.start_at_chronic)
-      if @todo.start_at.nil?
-        raise ChronicError.new(@todo.start_at_chronic)
+    if @todo.show_at_chronic.present?
+      @todo.show_at = Chronic.parse(@todo.show_at_chronic)
+      if @todo.show_at.nil?
+        raise ChronicError.new(@todo.show_at_chronic)
       end
     end
 

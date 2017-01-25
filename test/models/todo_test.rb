@@ -89,7 +89,7 @@ class TodoTest < ActiveSupport::TestCase
 
   test 'showable' do
     Todo.create(todo_attrs)
-    assert_equal 1, Todo.showable.count
+    assert_equal 1,  Todo.showable.count
   end
 
   test 'active' do
@@ -174,22 +174,22 @@ class TodoTest < ActiveSupport::TestCase
       assert_equal name, category_name
     end
 
-    todos = Todo.or_categories_by_names('a')
+    todos = Todo.or_categories('a')
     assert_equal ["A", "D", "F"], todos.map(&:title).sort
 
-    todos = Todo.or_categories_by_names('b')
+    todos = Todo.or_categories('b')
     assert_equal ["B", "C"], todos.map(&:title).sort
 
-    todos = Todo.or_categories_by_names('a,b')
+    todos = Todo.or_categories('a,b')
     assert_equal ["A", "B", "C", "D", "F"], todos.map(&:title).sort
 
-    todos = Todo.or_categories_by_names('a,c')
+    todos = Todo.or_categories('a,c')
     assert_equal ["A", "D", "E", "F"], todos.map(&:title).sort
 
-    todos = Todo.or_categories_by_names('b,d')
+    todos = Todo.or_categories('b,d')
     assert_equal ["B", "C"], todos.map(&:title).sort
 
-    todos = Todo.or_categories_by_names('z')
+    todos = Todo.or_categories('z')
     assert_equal [], todos.map(&:title).sort
   end
 
