@@ -38,6 +38,7 @@ gem 'chronic'
 gem "responders"
 gem 'validates_timeliness'
 gem 'rails-controller-testing'
+gem 'ruby-graphviz'
 
 
 group :development do
