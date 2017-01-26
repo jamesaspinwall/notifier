@@ -8,7 +8,7 @@ class CreateTodos < ActiveRecord::Migration[5.0]
       t.datetime :show_at
       t.datetime :started_at
       t.datetime :completed_at
-
+      t.integer :lock_version
       t.timestamps
     end
   end

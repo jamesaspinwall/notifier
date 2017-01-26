@@ -8,12 +8,12 @@
 
 include Attrs
 
-%w{home work hobby project}.each do |name|
+%w{home akamai project}.each do |name|
   #puts "Category.create in #{Rails.env}"
   Category.create(name: name)
 end
 
-%w{clean meet call program}.each do |name|
+%w{}.each do |name|
   #puts "Tag.create in #{Rails.env}"
   Tag.create(name: name)
 end

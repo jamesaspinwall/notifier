@@ -55,8 +55,8 @@ class TodosController < ApplicationController
     respond_to do |format|
 
       if @todo.save
-        format.html { redirect_to todos_path, notice: 'Person was successfully created.' }
-        format.json { render :show, status: :created, location: @person }
+        format.html { redirect_to todos_path, notice: 'Todo was successfully created.' }
+        format.json { render :show, status: :created }
       else
         format.html { render :new }
         format.json { render json: @person.errors, status: :unprocessable_entity }
