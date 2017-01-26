@@ -13,6 +13,16 @@
   </thead>
 
   <tbody>
+  <%= form_tag(todos_path, :method=>'get') do %>
+      <%= label_tag 'or_categories', 'Categories:' %>
+      <%= text_field_tag "or_categories", params[:or_categories] %>
+      <%= label_tag 'and_tags', 'Tags:' %>
+      <%= text_field_tag "and_tags", params[:and_tags] %>
+      <%= label_tag 'show_at', 'Show' %>
+      <%= text_field_tag "show_at", params[:show_at] %>
+      <%= submit_tag 'Submit' %>
+  <% end %>
+
   <% @todos.each do |todo| %>
       <tr>
         <td><%= todo.category.try(:name) %></td>

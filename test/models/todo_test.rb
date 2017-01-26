@@ -87,14 +87,14 @@ class TodoTest < ActiveSupport::TestCase
     assert_on_tags(todo, 'x,y,z', 7)
   end
 
-  test 'showable' do
+  test 'show_at' do
     Todo.create(todo_attrs)
-    assert_equal 1,  Todo.showable.count
+    assert_equal 1,  Todo.show_at.count
   end
 
   test 'active' do
     Todo.create(todo_attrs)
-    assert_equal 1, Todo.complete_at(nil).count
+    assert_equal 1, Todo.completed_at(nil).count
   end
 
   test 'create with tag string delimited by comma' do

@@ -1,6 +1,6 @@
 class Todo < ApplicationRecord
 
-  #validates :complete_at, timeliness: { on_or_after: :created_at, allow_nil: true }
+  #validates :completed_at, timeliness: { on_or_after: :created_at, allow_nil: true }
   validates :started_at, timeliness: { on_or_after: :created_at, allow_nil: true }
 
   belongs_to :category, optional: true
@@ -11,8 +11,14 @@ class Todo < ApplicationRecord
   scope :for_user, -> (id_str) {
     id_str.present? ? where(user_id: id_str.to_i) : all
   }
-  scope :showable, -> {
-    where('show_at is NULL or show_at <= ?', Time.current)
+  scope :show_at, -> (time_to_show = nil) {
+    if time_to_show.blank?
+      where('show_at is NULL or show_at <= ?', Time.current)
+    else
+      show_at = Chronic.parse(time_to_show)
+      raise 'show at is invalid' if show_at.nil?
+      where('show_at is NULL or show_at <= ?', show_at)
+    end
   }
 
   scope :and_tags_by_names_old, -> (str) {
@@ -44,16 +50,12 @@ class Todo < ApplicationRecord
     end
   }
 
-  scope :complete_at, ->(time_range) {
+  scope :completed_at, ->(time_range) {
     if time_range.present?
-      where(complete_at: parse_time_range(time_range))
+      where(completed_at: parse_time_range(time_range))
     else
-      where(complete_at: nil)
+      where(completed_at: nil)
     end
-  }
-
-  scope :show_at, ->(time_range) {
-    where(show_at: parse_time_range(time_range))
   }
 
   def self.parse_time_range(time_range)

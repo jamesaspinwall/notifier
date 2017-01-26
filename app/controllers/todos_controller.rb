@@ -5,14 +5,17 @@ class TodosController < ApplicationController
 
   def index
     chain = []
-    chain << [:show_at, params[:show_at]] unless params[:show_at].nil?
-    chain << [:complete_at, params[:complete_at]] unless params[:complete_at].nil?
-    chain << [:or_categories, params[:or_categories]] unless params[:or_categories].nil?
-    chain << [:and_tags, params[:and_tags]] unless params[:and_tags].nil?
-    chain << [:for_user, params[:for_user]] unless params[:for_user].nil?
+    chain << [:show_at, params[:show_at]]
+    chain << [:completed_at, params[:completed_at]] if params[:completed_at].present?
+    chain << [:or_categories, params[:or_categories]] if params[:or_categories].present?
+    chain << [:and_tags, params[:and_tags]] if params[:and_tags].present?
+    chain << [:for_user, params[:for_user]] if params[:for_user].present?
     chain.map do |scope, params|
       @todos = Todo.send(scope, params)
     end
+
+    #short cut until device is implemented
+    @todos = Todo.all if chain.blank?
 
     respond_with(@todos)
   rescue =>e
@@ -36,7 +39,8 @@ class TodosController < ApplicationController
     @todo = Todo.new(todo_params)
 
     if @todo.category_id.nil?
-      @todo.category = Todo.order(:updated_at).last.category
+      category = Todo.order(:updated_at).last.try(category)
+      @todo.category = category
     end
 
     if @todo.show_at_chronic.present?
@@ -79,7 +83,7 @@ class TodosController < ApplicationController
   end
 
   def complete
-    set_with_time_current(:complete_at)
+    set_with_time_current(:completed_at)
   end
 
   private
@@ -88,7 +92,7 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :show_at, :show_at_chronic, :started_at, :complete_at, :category_id)
+    params.require(:todo).permit(:title, :description, :show_at, :show_at_chronic, :started_at, :completed_at, :category_id)
   end
 
   def set_with_time_current(field)

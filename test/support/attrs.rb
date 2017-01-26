@@ -5,7 +5,7 @@ module Attrs
       description: 'Just description',
       show_at_chronic: 'now',
       started_at: nil,
-      complete_at: nil,
+      completed_at: nil,
     }.deep_merge attrs
   end
 

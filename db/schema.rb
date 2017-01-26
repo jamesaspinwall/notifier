@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20170118163250) do
     t.string   "show_at_chronic"
     t.datetime "show_at"
     t.datetime "started_at"
-    t.datetime "complete_at"
+    t.datetime "completed_at"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["category_id"], name: "index_todos_on_category_id"

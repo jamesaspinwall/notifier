@@ -7,7 +7,7 @@ class CreateTodos < ActiveRecord::Migration[5.0]
       t.string :show_at_chronic
       t.datetime :show_at
       t.datetime :started_at
-      t.datetime :complete_at
+      t.datetime :completed_at
 
       t.timestamps
     end

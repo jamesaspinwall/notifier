@@ -2,11 +2,9 @@ require 'test_helper'
 
 class TodosControllerTest < ActionDispatch::IntegrationTest
 
-  def setup
-    @id = Todo.create(todo_attrs).id
-  end
-
   test "should get index" do
+    @id = Todo.create(todo_attrs).id
+
     get todos_url
     assert_response :success
 
@@ -18,6 +16,8 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    @id = Todo.create(todo_attrs).id
+
     get new_todo_url
     assert_response :success
     attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id, :title)
@@ -36,6 +36,8 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show todo" do
+    @id = Todo.create(todo_attrs).id
+
     get todo_url(@id)
     assert_response :success
     attrs = Todo.find(@id).attributes.symbolize_keys.extract!(:id, :title, :description)
@@ -46,12 +48,16 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
+    @id = Todo.create(todo_attrs).id
+
     get edit_todo_url(@id)
     assert_match /#{@id}/, response.body
     assert_response :success
   end
 
   test "should update todo" do
+    @id = Todo.create(todo_attrs).id
+
     attrs = todo_attrs
     patch todo_url(@id), params: {todo: attrs}
     assert_redirected_to todo_url(@id)
@@ -59,6 +65,8 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy todo" do
+    @id = Todo.create(todo_attrs).id
+
     assert_difference('Todo.count', -1) do
       delete todo_url(@id)
     end
@@ -66,6 +74,8 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update only title' do
+    @id = Todo.create(todo_attrs).id
+
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs, attrs
 
@@ -75,17 +85,21 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'success complete todo' do
-    assert_difference 'Todo.complete_at(nil).count', -1 do
-      patch todo_url(@id), params: {todo: {complete_at: Time.current}}
+    @id = Todo.create(todo_attrs).id
+
+    assert_difference 'Todo.completed_at(nil).count', -1 do
+      patch todo_url(@id), params: {todo: {completed_at: Time.current}}
       assert_response :redirect
     end
   end
 
-  test 'fails when complete_at before created_at' do
-    assert_difference 'Todo.complete_at(nil).count', -1 do
-      complete_at = Time.current
-      patch todo_url(@id), params: {todo: {complete_at: complete_at}}
-      assert_equal complete_at.to_i, assigns(:todo).complete_at.to_i
+  test 'fails when completed_at before created_at' do
+    @id = Todo.create(todo_attrs).id
+
+    assert_difference 'Todo.completed_at(nil).count', -1 do
+      completed_at = Time.current
+      patch todo_url(@id), params: {todo: {completed_at: completed_at}}
+      assert_equal completed_at.to_i, assigns(:todo).completed_at.to_i
     end
   end
 
@@ -141,7 +155,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test 'index with completed range' do
 
     create_todos_for_completed
-    get todos_url, params: {complete_at: 'yesterday at 1 am, now'}
+    get todos_url, params: {completed_at: 'yesterday at 1 am,now'}
     assert_equal ['A', 'D'], assigns(:todos).map(&:title)
 
   end
@@ -149,7 +163,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test 'invalid with with completed range bad format' do
 
     create_todos_for_completed
-    get todos_url, params: {completed: 'yesterday at 1 am, nowi'}
+    get todos_url, params: {completed_at: 'yesterday at 1 am, nowi'}
     assert_equal Todo.count, assigns(:todos).count
     refute_empty flash[:error]
 
@@ -157,6 +171,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test 'another complete todo' do
     skip
+    @id = Todo.create(todo_attrs).id
 
     assert_difference 'Todo.active.count', -1 do
       get "/todos/complete/#{@id}"
@@ -168,16 +183,23 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   test 'index with show_at range' do
 
     create_todos_for_show_at
-    get todos_url, params: {show_at: 'yesterday at 1 am, now'}
-    assert_equal ['A', 'D'], assigns(:todos).map(&:title)
+    get todos_url, params: {show_at: 'tomorrow 11:59PM'}
+    assert_equal ['A', 'B','D'], assigns(:todos).map(&:title)
 
   end
 
+  test 'index with show_at blank' do
+
+    create_todos_for_show_at
+    get todos_url, params: {show_at: ''}
+    assert_equal ['B','D'], assigns(:todos).map(&:title)
+
+  end
 
   private
 
   def create_todos
-    Todo.destroy_all
+    
     Category.destroy_all
     Tag.destroy_all
 
@@ -196,8 +218,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   def create_todos_for_completed
-    Todo.destroy_all
-
+    
     data = [
       ['A', Time.current-1.day],
       ['B', nil],
@@ -207,21 +228,19 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
     ]
 
-    data.each do |title, complete_at|
-      Todo.create(todo_attrs(title: title, complete_at: complete_at))
+    data.each do |title, completed_at|
+      Todo.create(todo_attrs(title: title, completed_at: completed_at))
     end
     assert_equal data.size, Todo.count
   end
 
   def create_todos_for_show_at
-    Todo.destroy_all
-
     data = [
-      ['A', Time.current-1.day],
+      ['A', Time.current + 1.hours],
       ['B', nil],
-      ['C', Time.current-2.days],
-      ['D', Time.current-2.minutes],
-      ['E', Time.current - 7.days]
+      ['C', Time.current + 2.days],
+      ['D', Time.current - 2.minutes],
+      ['E', Time.current + 7.days]
 
     ]
 
