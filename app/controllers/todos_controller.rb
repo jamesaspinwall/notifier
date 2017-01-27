@@ -4,13 +4,10 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-     @todos = Todo
-    [:show_at,:completed_at,:or_categories,:and_tags,:for_user].each do |scope|
-      @todos = @todos.send(scope, params[:scope])
+    @todos = Todo
+    [:show_at,:completed_at,:or_categories,:and_tags].each do |scope|
+      @todos = @todos.send(scope, params[scope])
     end
-
-    #short cut until device is implemented
-    @todos = Todo.all if chain.blank?
 
     respond_with(@todos)
   rescue =>e
