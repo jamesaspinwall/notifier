@@ -5,12 +5,12 @@ class TodosController < ApplicationController
 
   def index
     @todos = Todo
-    [:show_at,:completed_at,:or_categories,:and_tags].each do |scope|
+    [:show_at, :completed_at, :or_categories, :and_tags].each do |scope|
       @todos = @todos.send(scope, params[scope])
     end
 
     respond_with(@todos)
-  rescue =>e
+  rescue => e
     @todos = Todo.all
     flash.now[:error] = "#{e.message}"
   end
@@ -60,9 +60,17 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo.update(todo_params)
-    @todo.build_tags(params[:todo][:tags])
-    respond_with(@todo)
+    @todo.show_at = Chronic.parse(@todo.show_at_chronic)
+    respond_to do |format|
+      if @todo.update(todo_params)
+        @todo.build_tags(params[:todo][:tags]) # ???
+        format.html { redirect_to todos_path, notice: 'Todo was successfully updated.' }
+        format.json { render :show, status: :ok, location: @todo }
+      else
+        format.html { render :edit }
+        format.json { render json: @todo.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
