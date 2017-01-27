@@ -41,6 +41,7 @@ gem 'rails-controller-testing'
 gem 'ruby-graphviz'
 gem 'spy_rb'
 gem 'yaml_db'
+gem 'devise'
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
