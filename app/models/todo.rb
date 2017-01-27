@@ -1,7 +1,7 @@
 class Todo < ApplicationRecord
 
   #validates :completed_at, timeliness: { on_or_after: :created_at, allow_nil: true }
-  validates :started_at, timeliness: { on_or_after: :created_at, allow_nil: true }
+  validates :started_at, timeliness: {on_or_after: :created_at, allow_nil: true}
 
   belongs_to :category, optional: true
   accepts_nested_attributes_for :category
@@ -21,18 +21,7 @@ class Todo < ApplicationRecord
     end
   }
 
-  scope :and_tags_by_names_old, -> (str) {
-    if str.blank?
-      all
-    else
-      arrays_of_todos_array = str.split(',').map(&:strip).map do |name|
-        joins(:tags).where(tags: { name: name })
-      end
-      arrays_of_todos_array.reduce(&:&)
-    end
-  }
-
-  scope :and_tags, -> (str) {
+   scope :and_tags, -> (str) {
     if str.blank?
       all
     else
@@ -46,7 +35,7 @@ class Todo < ApplicationRecord
       all
     else
       names = str.split(',').map(&:strip)
-      joins(:category).where(categories: { name: names })
+      joins(:category).where(categories: {name: names})
     end
   }
 
@@ -62,7 +51,11 @@ class Todo < ApplicationRecord
     Chronic.time_class = Time.zone
     from_str, to_str = time_range.split(',')
     from_at = Chronic.parse(from_str)
-    to_at = Chronic.parse(to_str)
+    if to_str.nil?
+      to_at = Time.current
+    else
+      to_at = Chronic.parse(to_str)
+    end
     raise 'date parse error' if from_at.nil? or to_at.nil?
     from_at..to_at
   end

@@ -1,6 +1,26 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Todos</h1>
+
+<table>
+  <tr>
+    <%= form_tag(todos_path, :method => 'get') do %>
+        <td>
+          <%= label_tag 'or_categories', 'Categories:' %>
+          <%= text_field_tag "or_categories", params[:or_categories] %>
+        </td>
+        <td>
+          <%= label_tag 'and_tags', 'Tags:' %>
+          <%= text_field_tag "and_tags", params[:and_tags] %>
+        </td>
+        <td>
+          <%= label_tag 'show_at', 'Show' %>
+          <%= text_field_tag "show_at", params[:show_at] %>
+        </td>
+        <td>
+          <%= submit_tag 'Submit' %>
+        </td>
+    <% end %>
+  </tr>
+</table>
 
 <table>
   <thead>
@@ -13,16 +33,6 @@
   </thead>
 
   <tbody>
-  <%= form_tag(todos_path, :method=>'get') do %>
-      <%= label_tag 'or_categories', 'Categories:' %>
-      <%= text_field_tag "or_categories", params[:or_categories] %>
-      <%= label_tag 'and_tags', 'Tags:' %>
-      <%= text_field_tag "and_tags", params[:and_tags] %>
-      <%= label_tag 'show_at', 'Show' %>
-      <%= text_field_tag "show_at", params[:show_at] %>
-      <%= submit_tag 'Submit' %>
-  <% end %>
-
   <% @todos.each do |todo| %>
       <tr>
         <td><%= todo.category.try(:name) %></td>
@@ -31,8 +41,8 @@
         <td><%= link_to 'Show', todo %></td>
         <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
         <td><%= link_to 'Destroy', todo, method: :delete %></td>
-        <td><%= link_to 'Start',  action: "started", id: todo.id %></td>
-        <td><%= link_to 'Complete',  action: "complete", id: todo.id %></td>
+        <td><%= link_to 'Start', action: "started", id: todo.id %></td>
+        <td><%= link_to 'Complete', action: "complete", id: todo.id %></td>
       </tr>
   <% end %>
   </tbody>

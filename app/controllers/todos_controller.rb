@@ -6,12 +6,13 @@ class TodosController < ApplicationController
   def index
     chain = []
     chain << [:show_at, params[:show_at]]
-    chain << [:completed_at, params[:completed_at]] if params[:completed_at].present?
-    chain << [:or_categories, params[:or_categories]] if params[:or_categories].present?
-    chain << [:and_tags, params[:and_tags]] if params[:and_tags].present?
-    chain << [:for_user, params[:for_user]] if params[:for_user].present?
-    chain.map do |scope, params|
-      @todos = Todo.send(scope, params)
+    chain << [:completed_at, params[:completed_at]]
+    chain << [:or_categories, params[:or_categories]]
+    chain << [:and_tags, params[:and_tags]]
+    chain << [:for_user, params[:for_user]]
+    @todos = Todo
+    chain.each do |scope, params|
+      @todos = @todos.send(scope, params)
     end
 
     #short cut until device is implemented
