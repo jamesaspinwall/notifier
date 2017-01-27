@@ -20,7 +20,7 @@ class TodosController < ApplicationController
   end
 
   def new
-    @todo = Todo.new(category_id: Todo.order(:updated_at).last.category_id)
+    @todo = Todo.new(category_id: Todo.order(:updated_at).last.try(:category_id))
     respond_with(@todo)
   end
 

@@ -60,7 +60,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
     attrs = todo_attrs
     patch todo_url(@id), params: {todo: attrs}
-    assert_redirected_to todo_url(@id)
+    assert_redirected_to todos_url
     assert_equal attrs[:title], Todo.find(@id).title
   end
 
@@ -184,7 +184,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
     create_todos_for_show_at
     get todos_url, params: {show_at: 'tomorrow 11:59PM'}
-    assert_equal ['A', 'B','D'], assigns(:todos).map(&:title)
+    assert_equal ['A', 'B','D'], assigns(:todos).map(&:title).sort
 
   end
 
