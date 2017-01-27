@@ -2,9 +2,14 @@ require 'test_helper'
 
 class TodoTest < ActiveSupport::TestCase
 
+  def setup
+    @user = User.new(:email => 'test@example.com', :password => 'password', :password_confirmation => 'password')
+    @user.save
+  end
+
   test 'CRUD' do
     id = nil
-    attrs = todo_attrs(category_attributes: category_attrs)
+    attrs = todo_attrs(user: @user, category_attributes: category_attrs)
 
     # CREATE
     assert_difference 'Todo.count' do
@@ -18,7 +23,7 @@ class TodoTest < ActiveSupport::TestCase
     todo = Todo.find(id)
     attrs.each do |k, v|
       unless k.to_s =~ /(.*)_attributes$/
-        assert_equal v, todo[k]
+        assert_equal v, todo[k] if k!=:user
       else
         v.each do |k, v|
           assert_equal v, todo.send($1)[k]
@@ -38,7 +43,7 @@ class TodoTest < ActiveSupport::TestCase
 
   test 'append tag to todo' do
     assert_difference 'Todo.count' do
-      todo = Todo.create todo_attrs(category_attributes: category_attrs, tags_attributes: [tag_attrs])
+      todo = Todo.create todo_attrs(user: @user, category_attributes: category_attrs, tags_attributes: [tag_attrs])
       assert_equal 1, todo.tags.count
     end
   end
@@ -47,6 +52,7 @@ class TodoTest < ActiveSupport::TestCase
     assert_difference 'Todo.count' do
       Todo.create(
         todo_attrs(
+          user: @user,
           tags_attributes: [tag_attrs, tag_attrs, tag_attrs],
           category_attributes: category_attrs
         )
@@ -73,7 +79,7 @@ class TodoTest < ActiveSupport::TestCase
   end
 
   test 'tags' do
-    todo = Todo.create(todo_attrs)
+    todo = Todo.create(todo_attrs(user: @user))
     assert_empty todo.tags
 
     assert_on_tags(todo, 'a', 1)
@@ -87,13 +93,13 @@ class TodoTest < ActiveSupport::TestCase
     assert_on_tags(todo, 'x,y,z', 7)
   end
 
-  test 'show_at' do
-    Todo.create(todo_attrs)
+  test 'scope show_at' do
+    Todo.create(todo_attrs(user: @user))
     assert_equal 1,  Todo.show_at.count
   end
 
-  test 'active' do
-    Todo.create(todo_attrs)
+  test 'scope completed_at' do
+    Todo.create(todo_attrs(user: @user))
     assert_equal 1, Todo.completed_at(nil).count
   end
 
@@ -112,7 +118,7 @@ class TodoTest < ActiveSupport::TestCase
     assert_difference 'Todo.count', 4 do
       data.each do |title, tag_names_str|
         tags = Tag.by_names(tag_names_str)
-        Todo.create(title: title, tags: tags)
+        Todo.create(user: @user, title: title, tags: tags)
       end
     end
 
@@ -165,7 +171,7 @@ class TodoTest < ActiveSupport::TestCase
     assert_difference 'Todo.count', data.size do
       data.each do |title, category_name|
         category = Category.find_by(name: category_name)
-        assert Todo.create(title: title, category: category)
+        assert Todo.create(user: @user, title: title, category: category)
       end
     end
 

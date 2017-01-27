@@ -1,9 +1,16 @@
 require 'test_helper'
 
 class TodosControllerTest < ActionDispatch::IntegrationTest
+  #include Devise::Test::ControllerHelpers
+
+  def setup
+    @user = User.new(:email => 'test@example.com', :password => 'password', :password_confirmation => 'password')
+    @user.save
+    sign_in @user
+  end
 
   test "should get index" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     get todos_url
     assert_response :success
@@ -16,7 +23,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     get new_todo_url
     assert_response :success
@@ -28,7 +35,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create todo" do
     assert_difference('Todo.count') do
-      post todos_url, params: {todo: todo_attrs}
+      post todos_url, params: {todo: todo_attrs(user:@user)}
     end
     #id = Rails.application.routes.recognize_path(response.redirect_url)[:id]
     #todo = Todo.find(id)
@@ -36,7 +43,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show todo" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     get todo_url(@id)
     assert_response :success
@@ -48,7 +55,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     get edit_todo_url(@id)
     assert_match /#{@id}/, response.body
@@ -56,7 +63,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update todo" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     attrs = todo_attrs
     patch todo_url(@id), params: {todo: attrs}
@@ -65,7 +72,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy todo" do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     assert_difference('Todo.count', -1) do
       delete todo_url(@id)
@@ -74,7 +81,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update only title' do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
     assert_equal todo_attrs, attrs
@@ -85,7 +92,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'success complete todo' do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     assert_difference 'Todo.completed_at(nil).count', -1 do
       patch todo_url(@id), params: {todo: {completed_at: Time.current}}
@@ -94,7 +101,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'fails when completed_at before created_at' do
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user:@user)).id
 
     assert_difference 'Todo.completed_at(nil).count', -1 do
       completed_at = Time.current
@@ -171,7 +178,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test 'another complete todo' do
     skip
-    @id = Todo.create(todo_attrs).id
+    @id = Todo.create(todo_attrs(user: @user)).id
 
     assert_difference 'Todo.active.count', -1 do
       get "/todos/complete/#{@id}"
@@ -211,7 +218,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
       tags = tag_names.map do |t|
         Tag.find_or_create_by(name: t)
       end
-      todo = Todo.new(todo_attrs(title: title, category_attributes: {name: category}))
+      todo = Todo.new(todo_attrs(user:@user, title: title, category_attributes: {name: category},))
       todo.tags = tags
       todo.save
     end
@@ -229,7 +236,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     ]
 
     data.each do |title, completed_at|
-      Todo.create(todo_attrs(title: title, completed_at: completed_at))
+      Todo.create(todo_attrs(user:@user, title: title, completed_at: completed_at))
     end
     assert_equal data.size, Todo.count
   end
@@ -245,7 +252,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     ]
 
     data.each do |title, show_at|
-      Todo.create(todo_attrs(title: title, show_at: show_at))
+      Todo.create(todo_attrs(user:@user, title: title, show_at: show_at))
     end
     assert_equal data.size, Todo.count
 

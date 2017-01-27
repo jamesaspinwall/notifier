@@ -1,17 +1,18 @@
 class TodosController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_todo, only: [:show, :edit, :update, :destroy, :started, :complete]
 
   respond_to :html, :json
 
   def index
-    @todos = Todo.order(:category_id,:show_at,:created_at)
+    @todos = Todo.includes(:category).includes(:tags).order(:category_id, :show_at, :created_at).for_user(current_user)
     [:show_at, :completed_at, :or_categories, :and_tags, :started_at].each do |scope|
       @todos = @todos.send(scope, params[scope])
     end
 
     respond_with(@todos)
   rescue => e
-    @todos = Todo.all
+    @todos = Todo.where(user: current_user)
     flash.now[:error] = "#{e.message}"
   end
 
@@ -28,7 +29,7 @@ class TodosController < ApplicationController
   end
 
   def create
-    @todo = Todo.new(todo_params)
+    @todo = Todo.new(todo_params.merge(user: current_user))
 
     if @todo.category_id.nil?
       category = Todo.order(:updated_at).last.try(category)
@@ -60,9 +61,9 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo.show_at = Chronic.parse(@todo.show_at_chronic)
     respond_to do |format|
       if @todo.update(todo_params)
+        @todo.show_at = Chronic.parse(@todo.show_at_chronic)
         @todo.build_tags(params[:todo][:tags]) # ???
         format.html { redirect_to todos_path, notice: 'Todo was successfully updated.' }
         format.json { render :show, status: :ok, location: @todo }
@@ -88,7 +89,10 @@ class TodosController < ApplicationController
 
   private
   def set_todo
-    @todo = Todo.find(params[:id])
+    @todo = Todo.find_by!(id: params[:id], user: current_user)
+  rescue => e
+    flash[:error] = "#{e.message}"
+    redirect_to todos_url
   end
 
   def todo_params

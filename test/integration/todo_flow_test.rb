@@ -4,6 +4,7 @@ class TodoFlowTest < Capybara::Rails::TestCase
 
 
   test 'ISNECUD' do
+    skip
     # require 'spy'
     # spy = Spy.on(Todo, :show_at)
     # spy.before {
@@ -18,6 +19,7 @@ class TodoFlowTest < Capybara::Rails::TestCase
   end
 
   test 'create new todo with show_at_chronic YESTERDAY' do
+    skip
     visit todos_path
     click_on 'New Todo'
     attrs = todo_attrs(show_at_chronic: 'yesterday')
@@ -36,6 +38,7 @@ class TodoFlowTest < Capybara::Rails::TestCase
   end
 
   test 'create new todo with tomorrow show_at' do
+    skip
     visit todos_path
     click_on 'New Todo'
     attrs = todo_attrs(show_at_chronic: 'tomorrow')

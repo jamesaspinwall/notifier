@@ -3,13 +3,14 @@ class Todo < ApplicationRecord
   #validates :completed_at, timeliness: { on_or_after: :created_at, allow_nil: true }
   validates :started_at, timeliness: {on_or_after: :created_at, allow_nil: true}
 
+  belongs_to :user
   belongs_to :category, optional: true
   accepts_nested_attributes_for :category
   has_and_belongs_to_many :tags #, autosave: true
   accepts_nested_attributes_for :tags
 
-  scope :for_user, -> (id_str) {
-    id_str.present? ? where(user_id: id_str.to_i) : all
+  scope :for_user, -> (user) {
+    user.present? ? where(user_id: user.id) : raise('error user expected')
   }
   scope :show_at, -> (time_to_show = nil) {
     if time_to_show.blank?
