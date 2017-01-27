@@ -47,6 +47,18 @@ class Todo < ApplicationRecord
     end
   }
 
+  scope :started_at, ->(param){
+    if param.blank?
+      all
+    elsif param=='true' or param == true
+      where.not(started_at: nil)
+    elsif param =='false' or param == false
+      where(started_at: nil)
+    else
+      raise 'started_at should be true/false'
+    end
+  }
+
   def self.parse_time_range(time_range)
     Chronic.time_class = Time.zone
     from_str, to_str = time_range.split(',')

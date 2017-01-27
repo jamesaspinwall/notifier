@@ -4,8 +4,8 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-    @todos = Todo
-    [:show_at, :completed_at, :or_categories, :and_tags].each do |scope|
+    @todos = Todo.order(:category_id,:show_at,:created_at)
+    [:show_at, :completed_at, :or_categories, :and_tags, :started_at].each do |scope|
       @todos = @todos.send(scope, params[scope])
     end
 
@@ -20,7 +20,7 @@ class TodosController < ApplicationController
   end
 
   def new
-    @todo = Todo.new
+    @todo = Todo.new(category_id: Todo.order(:updated_at).last.category_id)
     respond_with(@todo)
   end
 
