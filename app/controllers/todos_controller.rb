@@ -4,15 +4,9 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-    chain = []
-    chain << [:show_at, params[:show_at]]
-    chain << [:completed_at, params[:completed_at]]
-    chain << [:or_categories, params[:or_categories]]
-    chain << [:and_tags, params[:and_tags]]
-    chain << [:for_user, params[:for_user]]
-    @todos = Todo
-    chain.each do |scope, params|
-      @todos = @todos.send(scope, params)
+     @todos = Todo
+    [:show_at,:completed_at,:or_categories,:and_tags,:for_user].each do |scope|
+      @todos = @todos.send(scope, params[:scope])
     end
 
     #short cut until device is implemented
