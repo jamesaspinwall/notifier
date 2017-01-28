@@ -14,38 +14,38 @@
 
     <div class="field">
       <%= f.fields_for :tags do |ff| %>
-          <%= ff.text_field :name %>
+          <%= ff.text_field :name, size: 20 %>
       <% end %>
     </div>
 
     <div class="field">
       <%= f.label :category_id %>
-      <%= f.collection_select(:category_id, Category.all.order(:name), :id, :name, include_blank: true) %>
+      <%= f.collection_select :category_id, Category.all.order(:name), :id, :name, {include_blank: true}, {style: 'width:200px'} %>
     </div>
 
     <div class="field">
       <%= f.label :title %>
-      <%= f.text_field :title %>
+      <%= f.text_field :title, autofocus: true, size: 100 %>
     </div>
 
     <div class="field">
       <%= f.label :tags %>
-      <%= f.text_field :tags, value: todo.tags.map(&:name).join(', ') %>
+      <%= f.text_field :tags, value: todo.tags.map(&:name).join(', '), size: 100 %>
     </div>
 
     <div class="field">
       <%= f.label :description %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, cols: 100, rows: 10 %>
     </div>
 
     <div class="field">
       <%= f.label :show_at_chronic %>
-      <%= f.text_field :show_at_chronic %>
+      <%= f.text_field :show_at_chronic, size: 100 %>
     </div>
 
     <div class="field">
       <%= f.label :completed_at %>
-      <%= f.text_field :completed_at %>
+      <%= f.text_field :completed_at, size: 100 %>
     </div>
 
     <div class="actions">
