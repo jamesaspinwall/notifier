@@ -62,9 +62,8 @@ class TodosController < ApplicationController
 
   def update
     respond_to do |format|
-      if @todo.update(todo_params)
-        @todo.show_at = Chronic.parse(@todo.show_at_chronic)
-        @todo.build_tags(params[:todo][:tags]) # ???
+      @todo.build_tags(params[:todo][:tags]) # ???
+      if @todo.update(todo_params.merge(show_at: Chronic.parse(@todo.show_at_chronic)))
         format.html { redirect_to todos_path, notice: 'Todo was successfully updated.' }
         format.json { render :show, status: :ok, location: @todo }
       else
