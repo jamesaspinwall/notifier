@@ -29,6 +29,11 @@
     </div>
 
     <div class="field">
+      <%= f.label :priority %>
+      <%= f.text_field :priority, size: 100 %>
+    </div>
+
+    <div class="field">
       <%= f.label :tags %>
       <%= f.text_field :tags, value: todo.tags.map(&:name).join(', '), size: 100 %>
     </div>

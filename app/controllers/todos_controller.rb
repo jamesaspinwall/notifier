@@ -5,7 +5,7 @@ class TodosController < ApplicationController
   respond_to :html, :json
 
   def index
-    @todos = Todo.includes(:category).includes(:tags).order(:category_id, :show_at, :created_at).for_user(current_user)
+    @todos = Todo.includes(:category).includes(:tags).order(:category_id, 'priority DESC', :show_at, :created_at).for_user(current_user)
     [:show_at, :completed_at, :or_categories, :and_tags, :started_at].each do |scope|
       @todos = @todos.send(scope, params[scope])
     end
@@ -36,12 +36,8 @@ class TodosController < ApplicationController
       @todo.category = category
     end
 
-    if @todo.show_at_chronic.present?
-      @todo.show_at = Chronic.parse(@todo.show_at_chronic)
-      if @todo.show_at.nil?
-        raise ChronicError.new(@todo.show_at_chronic)
-      end
-    end
+
+    @todo.show_at = @todo.show_at_chronic = parse_chronic(@todo.show_at_chronic)
 
     @todo.build_tags(params[:todo][:tags])
 
@@ -63,7 +59,8 @@ class TodosController < ApplicationController
   def update
     respond_to do |format|
       @todo.build_tags(params[:todo][:tags]) # ???
-      if @todo.update(todo_params.merge(show_at: Chronic.parse(@todo.show_at_chronic)))
+      parsed_date = parse_chronic(params[:todo][:show_at_chronic])
+      if @todo.update(todo_params.merge(show_at: parsed_date, show_at_chronic: parsed_date))
         format.html { redirect_to todos_path, notice: 'Todo was successfully updated.' }
         format.json { render :show, status: :ok, location: @todo }
       else
@@ -95,7 +92,7 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :show_at, :show_at_chronic, :started_at, :completed_at, :category_id)
+    params.require(:todo).permit(:title, :description, :priority, :show_at, :show_at_chronic, :started_at, :completed_at, :category_id)
   end
 
   def set_with_time_current(field)
@@ -108,6 +105,18 @@ class TodosController < ApplicationController
       flash[:error] = @todo.errors.full_messages
     end
     redirect_to action: 'index'
+  end
 
+  # TODO: code smell
+  def parse_chronic(str)
+    if str.present?
+      ret = Chronic.parse(str)
+      if ret.nil?
+        raise ChronicError.new(str)
+      end
+      ret
+    else
+      nil
+    end
   end
 end
