@@ -81,6 +81,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update only title' do
+    skip
     @id = Todo.create(todo_attrs(user:@user)).id
 
     attrs = Todo.find(@id).attributes.symbolize_keys!.extract!(*todo_attrs.keys)
