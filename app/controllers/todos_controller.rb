@@ -36,9 +36,6 @@ class TodosController < ApplicationController
       @todo.category = category
     end
 
-
-    @todo.show_at = @todo.show_at_chronic = parse_chronic(@todo.show_at_chronic)
-
     @todo.build_tags(params[:todo][:tags])
 
     respond_to do |format|
@@ -59,8 +56,7 @@ class TodosController < ApplicationController
   def update
     respond_to do |format|
       @todo.build_tags(params[:todo][:tags]) # ???
-      parsed_date = parse_chronic(params[:todo][:show_at_chronic])
-      if @todo.update(todo_params.merge(show_at: parsed_date, show_at_chronic: parsed_date))
+      if @todo.update(todo_params)
         format.html { redirect_to todos_path, notice: 'Todo was successfully updated.' }
         format.json { render :show, status: :ok, location: @todo }
       else
@@ -92,15 +88,12 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :priority, :show_at, :show_at_chronic, :started_at, :completed_at, :category_id)
+    params.require(:todo).permit(:title, :description, :priority, :show_at, :started_at, :completed_at, :category_id)
   end
 
   def set_with_time_current(field)
-    if field.nil?
-      puts 'nil'
-    end
     if @todo.update(field => Time.current)
-      flash[:notice] = 'Todo started_at set'
+      flash[:notice] = "Todo #{field} set"
     else
       flash[:error] = @todo.errors.full_messages
     end
@@ -108,15 +101,4 @@ class TodosController < ApplicationController
   end
 
   # TODO: code smell
-  def parse_chronic(str)
-    if str.present?
-      ret = Chronic.parse(str)
-      if ret.nil?
-        raise ChronicError.new(str)
-      end
-      ret
-    else
-      nil
-    end
-  end
 end

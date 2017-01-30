@@ -28,7 +28,7 @@ module Notifier
       "#{config.root}/test/support/",
     ] if %w(development test).include? Rails.env
     #config.autoload_paths << "#{Rails.root}/services"
-    config.time_zone = 'Eastern Time (US & Canada)'
+    config.time_zone = 'UTC'
 
   end
 end

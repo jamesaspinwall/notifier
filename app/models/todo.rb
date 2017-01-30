@@ -1,5 +1,8 @@
 class Todo < ApplicationRecord
 
+  attribute :title, StrippedString.new
+  attribute :show_at, Chronicle.new
+
   #validates :completed_at, timeliness: { on_or_after: :created_at, allow_nil: true }
   validates :started_at, timeliness: {on_or_after: :created_at, allow_nil: true}
 
@@ -14,9 +17,9 @@ class Todo < ApplicationRecord
   }
   scope :show_at, -> (time_to_show = nil) {
     if time_to_show.blank?
-      where('show_at is NULL or show_at <= ?', Time.current)
+      where('show_at is NULL or show_at <= ?', Time.current.to_i)
     else
-      show_at = Chronic.parse(time_to_show)
+      show_at = Chronic.parse(time_to_show).to_i
       raise 'show at is invalid' if show_at.nil?
       where('show_at is NULL or show_at <= ?', show_at)
     end

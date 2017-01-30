@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170129000019) do
+ActiveRecord::Schema.define(version: 20170130014636) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20170129000019) do
     t.string   "title"
     t.text     "description"
     t.string   "show_at_chronic"
-    t.datetime "show_at"
+    t.integer  "show_at"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "lock_version"
