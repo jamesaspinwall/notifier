@@ -37,7 +37,7 @@
   <% @todos.each do |todo| %>
       <tr>
         <td><%= link_to todo.category.try(:name), "/todos?or_categories=#{todo.category.try(:name)}" %></td>
-        <td><%= link_to todo.title, edit_todo_path(todo) %></td>
+        <td><%= link_to raw(todo.title), edit_todo_path(todo) %></td>
         <td><%= todo.priority %></td>
         <td><%= link_to 'Destroy', todo, method: :delete %></td>
         <td><%= link_to 'Start', action: "started", id: todo.id %></td>
