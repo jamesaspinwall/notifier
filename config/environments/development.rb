@@ -26,15 +26,16 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  if true
+  app_config = YAML.load_file('config/config.yml')
+  if app_config['gmail_use']
     config.action_mailer.smtp_settings = {
       address: "smtp.gmail.com",
       port: 587,
       domain: 'gmail.com',
       authentication: "plain",
       enable_starttls_auto: true,
-      user_name: ENV['GMAIL_USERNAME'],
-      password: ENV["GMAIL_PASSWORD"]
+      user_name: app_config['gmail_account'],
+      password: app_config['gmail_password']
     }
   else
     config.action_mailer.delivery_method = :smtp

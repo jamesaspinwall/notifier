@@ -31,12 +31,8 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params.merge(user: current_user))
 
-    if @todo.category_id.nil?
-      category = Todo.order(:updated_at).last.try(category)
-      @todo.category = category
-    end
-
     @todo.build_tags(params[:todo][:tags])
+
 
     respond_to do |format|
 
@@ -88,7 +84,7 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :description, :priority, :show_at, :started_at, :completed_at, :category_id)
+    params.require(:todo).permit(:title, :mail, :alert, :description, :priority, :show_at, :started_at, :completed_at, :category_id)
   end
 
   def set_with_time_current(field)

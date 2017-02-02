@@ -40,14 +40,35 @@ module Attrs
     }.merge attr
   end
 
+  if false
+    include Attrs
+    Notice.create schedule_notice(mailer_notice_attrs(notify_chronic:'in 15 secs'))
+  end
+
   def mailer_notice_attrs(attr = {})
     {
       title: 'title',
       description: 'description',
-      notify_chronic: 'tomorrow',
-      inst: Marshal.dump(NotifierMailer.notice(subject: 'NotifierMailer', content: "#{Time.current}")),
-      meth: 'deliver!',
+      notify_chronic: 'in 3 secs',
+      inst: Marshal.dump(NotifierMailer.notice(subject: 'aaa' , content: "#{Time.current}")),
+      meth: 'deliver_now',
       args: Marshal.dump([])
+    }.merge attr
+  end
+
+  if false
+    include Attrs
+    notice = Task.schedule_notice pushover_notice_attrs
+  end
+
+  def pushover_notice_attrs(attr = {})
+    {
+      title: 'pushover',
+      description: '',
+      notify_chronic: 'in 2 secs',
+      inst: Marshal.dump(EmailReminderService),
+      meth: 'pushover',
+      args: Marshal.dump(['wow'])
     }.merge attr
   end
 

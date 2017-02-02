@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170130014636) do
+ActiveRecord::Schema.define(version: 20170201231220) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 20170130014636) do
     t.datetime "updated_at",      null: false
     t.integer  "user_id"
     t.float    "priority"
+    t.boolean  "mail"
+    t.boolean  "alert"
     t.index ["category_id"], name: "index_todos_on_category_id"
     t.index ["user_id"], name: "index_todos_on_user_id"
   end

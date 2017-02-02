@@ -1,4 +1,5 @@
 class Todo < ApplicationRecord
+  include Attrs
 
   attribute :title, StrippedString.new
   attribute :show_at, Chronicle.new
@@ -11,6 +12,44 @@ class Todo < ApplicationRecord
   accepts_nested_attributes_for :category
   has_and_belongs_to_many :tags #, autosave: true
   accepts_nested_attributes_for :tags
+
+  after_save :schedule_task, on: :create
+
+  def schedule_task
+    if mail
+      Task.schedule_notice(
+        title: title,
+        description: description,
+        notify_chronic: show_at,
+        inst: Marshal.dump(NotifierMailer.notice(subject: title, content: description)),
+        meth: 'deliver_now',
+        args: Marshal.dump([]
+        ))
+    end
+
+    if alert
+      Task.schedule_notice(
+        title: title,
+        description: description,
+        notify_chronic: show_at,
+        inst: Marshal.dump(EmailReminderService),
+        meth: 'pushover',
+        args: Marshal.dump([title]
+        ))
+    end
+  end
+
+  after_save :reschedule_notice, on: :update
+
+  def reschedule_notice
+
+  end
+
+  after_destroy :unschedule_notice
+
+  def unschedule_notice
+
+  end
 
   scope :for_user, -> (user) {
     user.present? ? where(user_id: user.id) : raise('error user expected')
@@ -25,7 +64,7 @@ class Todo < ApplicationRecord
     end
   }
 
-   scope :and_tags, -> (str) {
+  scope :and_tags, -> (str) {
     if str.blank?
       all
     else
@@ -51,7 +90,7 @@ class Todo < ApplicationRecord
     end
   }
 
-  scope :started_at, ->(param){
+  scope :started_at, ->(param) {
     if param.blank?
       all
     elsif param=='true' or param == true
