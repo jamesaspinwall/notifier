@@ -9,6 +9,8 @@ class Notice < ApplicationRecord
   validates :sent_at, date_time: true
   validates :title, length: { minimum: 3 }
 
+  belongs_to :todo
+
   def set_notify_at
     if self.notify_chronic_changed?
       Chronic.time_class = Time.zone

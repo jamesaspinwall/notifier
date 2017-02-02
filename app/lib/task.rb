@@ -42,10 +42,14 @@ class Task
     end
   end
 
-  def self.schedule_notice(attrs)
+  def self.schedule_new_notice(attrs)
     notice = Notice.create(attrs)
     schedule_next_notice
     notice
+  end
+
+  def self.reschedule
+    schedule_next_notice
   end
 
   def cancel

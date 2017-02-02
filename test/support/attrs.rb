@@ -42,7 +42,7 @@ module Attrs
 
   if false
     include Attrs
-    Notice.create schedule_notice(mailer_notice_attrs(notify_chronic:'in 15 secs'))
+    Notice.create schedule_new_notice(mailer_notice_attrs(notify_chronic:'in 15 secs'))
   end
 
   def mailer_notice_attrs(attr = {})
@@ -58,7 +58,7 @@ module Attrs
 
   if false
     include Attrs
-    notice = Task.schedule_notice pushover_notice_attrs
+    notice = Task.schedule_new_notice pushover_notice_attrs
   end
 
   def pushover_notice_attrs(attr = {})

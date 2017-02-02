@@ -97,11 +97,11 @@ namespace :test_task do
     puts "Start at: #{Time.current}"
     Notice.destroy_all
 
-    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 4 secs'))
-    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 2 secs'))
-    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 3 secs'))
-    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 5 secs'))
-    Task.schedule_notice(mailer_notice_attrs(notify_chronic: 'in 1 secs'))
+    Task.schedule_new_notice(mailer_notice_attrs(notify_chronic: 'in 4 secs'))
+    Task.schedule_new_notice(mailer_notice_attrs(notify_chronic: 'in 2 secs'))
+    Task.schedule_new_notice(mailer_notice_attrs(notify_chronic: 'in 3 secs'))
+    Task.schedule_new_notice(mailer_notice_attrs(notify_chronic: 'in 5 secs'))
+    Task.schedule_new_notice(mailer_notice_attrs(notify_chronic: 'in 1 secs'))
 
     sleep 15
     Notice.all.each do |notice|

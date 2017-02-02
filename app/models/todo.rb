@@ -13,11 +13,12 @@ class Todo < ApplicationRecord
   has_and_belongs_to_many :tags #, autosave: true
   accepts_nested_attributes_for :tags
 
-  after_save :schedule_task, on: :create
+  has_many :notices
 
+  after_save :schedule_task, on: :create
   def schedule_task
     if mail
-      Task.schedule_notice(
+      notices << Task.schedule_new_notice(
         title: title,
         description: description,
         notify_chronic: show_at,
@@ -28,7 +29,7 @@ class Todo < ApplicationRecord
     end
 
     if alert
-      Task.schedule_notice(
+      notices << Task.schedule_new_notice(
         title: title,
         description: description,
         notify_chronic: show_at,
@@ -40,15 +41,13 @@ class Todo < ApplicationRecord
   end
 
   after_save :reschedule_notice, on: :update
-
   def reschedule_notice
-
+    Task.reschedule
   end
 
   after_destroy :unschedule_notice
-
   def unschedule_notice
-
+    Task.reschedule
   end
 
   scope :for_user, -> (user) {
