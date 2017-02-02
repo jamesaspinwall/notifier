@@ -5,11 +5,13 @@ class EmailReminderService
   end
 
   def self.pushover(message='test')
+    app_config = YAML.load_file('config/config.yml')
+
     url = URI.parse("https://api.pushover.net/1/messages.json")
     req = Net::HTTP::Post.new(url.path)
     data = {
-      token: "au9x1jpb6of8rp81cvxvt5qj4tph6v",
-      user: "upxpu88ksz1xxwad35unfj7uokczj4",
+      token: app_config['token'],
+      user: app_config['user'],
       message: message
     }
 
