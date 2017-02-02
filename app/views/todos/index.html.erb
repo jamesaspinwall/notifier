@@ -51,3 +51,13 @@
 <br>
 
 <%= link_to 'New Todo', new_todo_path %>
+
+<p> <%= raw "Task fires in: #{Task.current.timer.fires_in.to_i}" if Task.current.timer %> </p>
+
+<p> <%= n = Notice.scheduled
+  if n
+    "Scheduled: #{n.title} #{n.notify_at.strftime("%H:%M:%S")}"
+  end
+%> </p>
+
+<p> Notices:<br><%= raw Notice.where(sent_at: nil).order(:notify_at).map{|n| "#{n.title} #{n.notify_at.strftime("%H:%M:%S")}"}.join('<br>') %>

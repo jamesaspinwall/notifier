@@ -7,47 +7,60 @@ class Todo < ApplicationRecord
   #validates :completed_at, timeliness: { on_or_after: :created_at, allow_nil: true }
   validates :started_at, timeliness: {on_or_after: :created_at, allow_nil: true}
 
+  has_many :notices, dependent: :destroy
   belongs_to :user
-  belongs_to :category, optional: true
-  accepts_nested_attributes_for :category
-  has_and_belongs_to_many :tags #, autosave: true
-  accepts_nested_attributes_for :tags
+  belongs_to :category, optional: true; accepts_nested_attributes_for :category
+  has_and_belongs_to_many :tags; accepts_nested_attributes_for :tags
 
-  has_many :notices
 
-  after_save :schedule_task, on: :create
-  def schedule_task
-    if mail
-      notices << Task.schedule_new_notice(
-        title: title,
-        description: description,
-        notify_chronic: show_at,
-        inst: Marshal.dump(NotifierMailer.notice(subject: title, content: description)),
-        meth: 'deliver_now',
-        args: Marshal.dump([]
-        ))
-    end
-
-    if alert
-      notices << Task.schedule_new_notice(
-        title: title,
-        description: description,
-        notify_chronic: show_at,
-        inst: Marshal.dump(EmailReminderService),
-        meth: 'pushover',
-        args: Marshal.dump([title]
-        ))
-    end
+  after_create do
+    mail_notice_create if mail
+    alert_notice_create if alert
+    Task.schedule_next_notice
   end
 
-  after_save :reschedule_notice, on: :update
-  def reschedule_notice
-    Task.reschedule
+  after_update do
+    if self.mail_changed?
+      if self.mail
+        mail_notice_create
+      else
+        raise "TODO: remove the task"
+      end
+    end
+    if self.alert_changed? and self.alert
+      alert_notice_create
+    else
+      raise "TODO: remove the task"
+    end
+    Task.schedule_next_notice
   end
 
-  after_destroy :unschedule_notice
-  def unschedule_notice
-    Task.reschedule
+  after_destroy do
+    Task.schedule_next_notice
+  end
+
+  def mail_notice_create
+    notices << Notice.create!(
+      todo: self,
+      title: title,
+      description: description,
+      notify_chronic: show_at,
+      inst: Marshal.dump(NotifierMailer.notice(subject: title, content: description)),
+      meth: 'deliver_now',
+      args: Marshal.dump([]
+      ))
+  end
+
+  def alert_notice_create
+    notices << Notice.create!(
+      todo: self,
+      title: title,
+      description: description,
+      notify_chronic: show_at,
+      inst: Marshal.dump(EmailReminderService),
+      meth: 'pushover',
+      args: Marshal.dump([title],
+      ))
   end
 
   scope :for_user, -> (user) {

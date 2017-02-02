@@ -13,13 +13,18 @@ class Task
 
   def self.schedule(time_to_run, &block)
     raise "not a time" unless time_to_run.is_a?(Time)
-     if current.timer
-       current.timer.cancel
-     end
+    if current.timer
+      current.timer.cancel
+    end
 
     after_block = Proc.new do
       block.call
-      Notice.scheduled.sent
+      begin
+        Notice.scheduled.sent
+      rescue => e
+        puts e.message
+        raise e
+      end
       schedule_next_notice
     end
     current.timer = current.after(time_to_run - Time.current, &after_block)
@@ -29,27 +34,24 @@ class Task
     Notice.cancel_scheduled
     next_notice = Notice.earliest
     if next_notice.present?
-      next_notice.update(scheduled_at: Time.current)
+      ret = next_notice.update(scheduled_at: Time.current)
 
+      if ret.nil?
+        raise "Error: next_notice = #{next_notice}"
+      end
       schedule(next_notice.notify_at) {
         notice = Notice.scheduled
+
+        if notice.nil?
+          raise "Error there is no Notice.scheduled"
+        end
 
         inst = Marshal.load(notice.inst)
         args = Marshal.load(notice.args)
 
         inst.send(notice.meth, *args)
-       }
+      }
     end
-  end
-
-  def self.schedule_new_notice(attrs)
-    notice = Notice.create(attrs)
-    schedule_next_notice
-    notice
-  end
-
-  def self.reschedule
-    schedule_next_notice
   end
 
   def cancel
