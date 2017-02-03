@@ -24,13 +24,13 @@ class Todo < ApplicationRecord
       if self.mail
         mail_notice_create
       else
-        raise "TODO: remove the task"
+        puts "TODO: remove the task"
       end
     end
     if self.alert_changed? and self.alert
       alert_notice_create
     else
-      raise "TODO: remove the task"
+      puts  "TODO: remove the task"
     end
     Task.schedule_next_notice
   end
