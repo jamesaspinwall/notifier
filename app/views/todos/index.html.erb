@@ -1,4 +1,4 @@
-<h1>Todos</h1><h3><font color="red"><%= `hostname`%></font> </h3>
+<h2><font color="red"><%= `hostname`.upcase %></font></h2>
 
 <table>
   <tr>
@@ -59,9 +59,10 @@
 <p> <%= raw "Task fires in: #{Task.current.timer.fires_in.to_i}" if Task.current.timer %> </p>
 
 <p> <%= n = Notice.scheduled
-  if n
-    "Scheduled: #{n.title} #{n.notify_at.strftime("%H:%M:%S")}"
-  end
+        if n
+          "Scheduled: #{n.title} #{n.notify_at.strftime("%H:%M:%S")}"
+        end
 %> </p>
 
-<p> Notices:<br><%= raw Notice.where(sent_at: nil).order(:notify_at).map{|n| "#{n.title} #{n.notify_at.strftime("%H:%M:%S")}"}.join('<br>') %>
+<p>
+  Notices:<br><%= raw Notice.where(sent_at: nil).order(:notify_at).map { |n| "#{n.title} #{n.notify_at.strftime("%H:%M:%S")}" }.join('<br>') %>
